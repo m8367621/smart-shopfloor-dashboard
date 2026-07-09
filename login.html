@@ -2,131 +2,175 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Smart Shopfloor Environment Monitoring System</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="css/style.css">
+<title>Smart Shopfloor Environment Monitoring System</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 </head>
+
 
 <body>
 
-    <div class="login-container">
+<div class="login-container">
 
-        <div class="login-box">
-
-            <img src="images/veltech-logo.png" alt="Vel Tech Logo" class="logo">
-
-            <h1>Smart Shopfloor</h1>
-
-            <h2>Environment Monitoring System</h2>
-
-            <p class="subtitle">
-                Industrial IoT & Predictive Safety Analysis
-            </p>
-
-            <form>
-
-                <div class="input-box">
-
-                    <label>Username</label>
-
-                    <input type="text" placeholder="Enter Username">
-
-                </div>
-
-                <div class="input-box">
-
-                    <label>Password</label>
-
-                    <div class="password-box">
-
-                        <input
-                            type="password"
-                            id="password"
-                            placeholder="Enter Password">
-
-                        <span
-                            class="eye"
-                onclick="togglePassword()">
-
-                            👁
-
-                        </span>
-
-                    </div>
-
-                </div>
-
-                <div class="remember">
-
-                    <label>
-
-                        <input type="checkbox">
-
-                        Remember Me
-
-                    </label>
-
-                </div>
-
-                <button
-                type="button"
-                class="login-btn"
-                onclick="login()">
-
-                Login
-
-                </button>
-
-                <script>
-
-                function togglePassword() {
-
-                const password = document.getElementById("password");
-
-                if (password.type === "password") {
-                    password.type = "text";
-                } else {
-                password.type = "password";
-                }
-
-                }
-                function login() {
-
-                const username = document.querySelector("input[type='text']").value.trim();
-
-                const password = document.getElementById("password").value.trim();
+<div class="login-box">
 
 
-                if (username === "" || password === "") {
-
-                    alert("Please enter Username and Password.");
-
-                    return;
-
-                }
+<img src="images/veltech-logo.png" alt="Vel Tech Logo" class="logo">
 
 
-                    // Save login status
-                localStorage.setItem("loggedIn", "true");
+<h1>Smart Shopfloor</h1>
+
+<h2>Environment Monitoring System</h2>
 
 
-                    // Open dashboard
-                window.location.href = "index.html";
+<p class="subtitle">
+Industrial IoT & Predictive Safety Analysis
+</p>
 
-                }
 
-                </script>
-            
-            </form>
 
-        </div>
+<form>
 
-    </div>
+
+<div class="input-box">
+
+<label>Username</label>
+
+<input type="text" id="username" placeholder="Enter Username">
+
+</div>
+
+
+
+<div class="input-box">
+
+<label>Password</label>
+
+
+<div class="password-box">
+
+
+<input 
+type="password"
+id="password"
+placeholder="Enter Password">
+
+
+<span class="eye" onclick="togglePassword()">
+👁
+</span>
+
+
+</div>
+
+</div>
+
+
+
+<div class="remember">
+
+<label>
+
+<input type="checkbox">
+
+Remember Me
+
+</label>
+
+</div>
+
+
+
+<button 
+type="button"
+class="login-btn"
+onclick="login()">
+
+Login
+
+</button>
+
+
+</form>
+
+
+</div>
+
+</div>
+
+
+
+
+<script>
+
+
+function togglePassword()
+{
+
+let password = document.getElementById("password");
+
+
+if(password.type === "password")
+{
+password.type="text";
+}
+
+else
+{
+password.type="password";
+}
+
+}
+
+
+
+
+function login()
+{
+
+
+let username = document.getElementById("username").value.trim();
+
+let password = document.getElementById("password").value.trim();
+
+
+
+if(username === "" || password === "")
+{
+
+alert("Please enter Username and Password");
+
+return;
+
+}
+
+
+
+// Save login status
+
+localStorage.setItem("loggedIn","true");
+
+
+
+// Open dashboard
+
+window.location.href="index.html";
+
+
+}
+
+
+
+</script>
+
+
 
 </body>
 
