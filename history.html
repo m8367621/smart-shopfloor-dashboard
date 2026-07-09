@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>History | Smart Shopfloor Dashboard</title>
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/dashboard.css">
+
+</head>
+
+<body>
+
+<div class="history-page">
+
+    <h1>📜 Sensor History</h1>
+
+    <p>View and download previous sensor readings.</p>
+
+    <div class="filter-section">
+
+        <div>
+            <label>From Date</label><br>
+            <input type="date" id="fromDate">
+        </div>
+
+        <div>
+            <label>To Date</label><br>
+            <input type="date" id="toDate">
+        </div>
+
+        <div>
+            <label>Report Type</label><br>
+            <select id="reportType">
+
+                <option>Today</option>
+                <option>Weekly</option>
+                <option>Monthly</option>
+                <option>Custom</option>
+
+            </select>
+        </div>
+
+        <div>
+
+            <label>Search</label><br>
+
+            <input type="text" placeholder="Search...">
+
+        </div>
+
+    </div>
+
+    <div class="download-buttons">
+
+        <button id="excelBtn">📥 Download Excel</button>
+
+        <button id="pdfBtn">📄 Download PDF</button>
+
+    </div>
+
+</div>
+<div class="history-table">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Date</th>
+<th>Time</th>
+<th>PM1.0</th>
+<th>PM2.5</th>
+<th>PM10</th>
+<th>Noise (dB)</th>
+<th>Temperature (°C)</th>
+<th>Humidity (%)</th>
+<th>Light (Lux)</th>
+<th>Status</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+<td>08-07-2026</td>
+<td>10:30:15</td>
+<td>12</td>
+<td>28</td>
+<td>45</td>
+<td>68</td>
+<td>30</td>
+<td>58</td>
+<td>420</td>
+<td><span class="safe">SAFE</span></td>
+</tr>
+
+<tr>
+<td>08-07-2026</td>
+<td>10:35:20</td>
+<td>18</td>
+<td>42</td>
+<td>72</td>
+<td>78</td>
+<td>34</td>
+<td>66</td>
+<td>280</td>
+<td><span class="warning">WARNING</span></td>
+</tr>
+
+<tr>
+<td>08-07-2026</td>
+<td>10:40:18</td>
+<td>40</td>
+<td>90</td>
+<td>135</td>
+<td>92</td>
+<td>40</td>
+<td>82</td>
+<td>120</td>
+<td><span class="danger">CRITICAL</span></td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+<!-- Excel Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<!-- PDF Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script src="js/reports.js"></script>
+
+</body>
+
+</html>

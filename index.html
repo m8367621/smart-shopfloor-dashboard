@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Shopfloor Dashboard</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <link rel="stylesheet" href="css/dashboard.css">
+
+    <link rel="stylesheet" href="css/responsive.css">
+
+    <link rel="stylesheet" href="css/animations.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div class="sidebar">
+
+        <div class="logo-section">
+
+            <img src="images/veltech-logo.png" class="logo">
+
+            <h2>Smart Shopfloor</h2>
+
+            <p>Environment Monitoring</p>
+
+        </div>
+            <ul class="menu">
+                <li class="active"><a href="index.html">Dashboard</a></li>
+                <li><a href="live.html">Live Monitoring</a></li>
+                <li><a href="history.html">History</a></li>
+                <li><a href="analytics.html">Analytics</a></li>
+                <li><a href="reports.html">Reports</a></li>
+                <li><a href="settings.html">Settings</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        
+    </div>
+
+    <div class="main-content">
+
+        <div class="topbar">
+
+            <div class="page-title">
+                <h1>Dashboard</h1>
+                <p>Smart Shopfloor Environment Monitoring System</p>
+            </div>
+
+            <div class="status-bar">
+
+                <div class="status-card">
+                    📡 ESP32 : <span id="espStatus">Connected</span>
+                </div>
+
+                <div class="status-card">
+                    📶 Wi-Fi : <span id="wifiStatus">Connected</span>
+                </div>
+
+                <div class="status-card">
+                    ☁ Cloud : <span id="cloudStatus">Online</span>
+                </div>
+
+                <div class="status-card">
+                    📅 <span id="date"></span>
+                </div>
+
+                <div class="status-card">
+                    🕒 <span id="clock"></span>
+                </div>
+
+            </div>
+        
+        </div>
+
+    <div class="sensor-container">
+
+        <div class="sensor-card safe" id="pm1Card">
+            <h3>🌫 PM1.0</h3>
+            <h1 id="pm1Value">12</h1>
+            <p>µg/m³</p>
+            <span class="status green">SAFE</span>
+        </div>
+
+        <div class="sensor-card safe" id="pm25Card">
+            <h3>🌫 PM2.5</h3>
+            <h1 id="pm25Value">28</h1>
+            <p>µg/m³</p>
+            <span class="status green">SAFE</span>
+        </div>
+
+        <div class="sensor-card warning" id="pm10Card">
+            <h3>🌫 PM10</h3>
+            <h1 id="pm10Value">45</h1>
+            <p>µg/m³</p>
+            <span class="status yellow">WARNING</span>
+        </div>
+
+        <div class="sensor-card warning" id="noiseCard">
+            <h3>🔊 Noise</h3>
+            <h1 id="noiseValue">76</h1>
+            <p>dB</p>
+            <span class="status yellow">WARNING</span>
+        </div>
+
+        <div class="sensor-card safe" id="tempCard">
+            <h3>🌡 Temp</h3>
+            <h1 id="tempValue">30.0</h1>
+            <p>°C</p>
+            <span class="status green">SAFE</span>
+        </div>
+
+        <div class="sensor-card safe" id="humidityCard">
+            <h3>💧 Humidity</h3>
+            <h1 id="humidityValue">58</h1>
+            <p>%</p>
+            <span class="status green">SAFE</span>
+        </div>
+
+        <div class="sensor-card safe" id="lightCard">
+            <h3>💡 Ambient Light</h3>
+            <h1 id="lightValue">420</h1>
+            <p>Lux</p>
+            <span class="status green">GOOD</span>
+        </div>
+
+    </div>
+
+    <div class="graph-section">
+
+        <div class="graph-header">
+
+            <h2>📈 Live Sensor Trends</h2>
+
+            <select id="graphRange">
+                <option>Last 30 Minutes</option>
+                <option>Last 1 Hour</option>
+                <option>Last 24 Hours</option>
+            </select>
+
+        </div>
+
+        <div class="graph-grid">
+
+            <div class="graph-card">
+                <h3>PM1.0 (µg/m³)</h3>
+                <canvas id="pm1Chart"></canvas>
+            </div>
+
+            <div class="graph-card">
+                <h3>PM2.5 (µg/m³)</h3>
+                <canvas id="pm25Chart"></canvas>
+            </div>
+
+            <div class="graph-card">
+                <h3>PM10 (µg/m³)</h3>
+                <canvas id="pm10Chart"></canvas>
+            </div>
+
+            <div class="graph-card">
+                <h3>Noise (dB)</h3>
+                <canvas id="noiseChart"></canvas>
+            </div>
+
+            <div class="graph-card">
+                <h3>Temperature (°C)</h3>
+                <canvas id="tempChart"></canvas>
+            </div>
+
+            <div class="graph-card">
+                <h3>Humidity (%)</h3>
+                <canvas id="humidityChart"></canvas>
+            </div>
+
+            <div class="graph-card">
+                <h3>Ambient Light (Lux)</h3>
+                <canvas id="lightChart"></canvas>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- ================= OVERALL SAFETY STATUS ================= -->
+
+    <div class="overall-dashboard">
+
+        <div class="overall-card">
+
+            <h2>Overall Safety Status</h2>
+
+            <div class="overall-status safe" id="overallStatus">
+
+                <h1 id="overallText">SAFE</h1>
+
+                <p id="overallMessage">
+                All environmental parameters are within safe limits.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="tower-card">
+
+            <h2>Tower Lamp</h2>
+
+            <div class="tower">
+
+                <div class="lamp green active"></div>
+
+                <div class="lamp yellow"></div>
+
+                <div class="lamp red"></div>
+
+            </div>
+
+            <p id="towerText">GREEN - Normal Condition</p>
+
+        </div>
+
+    </div>
+    <!-- ================= RECENT ALERTS ================= -->
+
+    <div class="alerts-card">
+
+        <div class="alerts-header">
+            <h2>🔔 Recent Sensor Alerts</h2>
+        </div>
+
+        <div class="alert-item safe">
+            <span>🌫 PM1.0 : SAFE</span>
+            <small>10:45:10</small>
+        </div>
+
+        <div class="alert-item warning">
+            <span>🌫 PM2.5 : WARNING</span>
+            <small>10:45:12</small>
+        </div>
+
+        <div class="alert-item danger">
+            <span>🌫 PM10 : CRITICAL</span>
+            <small>10:45:15</small>
+        </div>
+
+        <div class="alert-item warning">
+            <span>🔊 Noise : WARNING</span>
+            <small>10:45:20</small>
+        </div>
+
+        <div class="alert-item safe">
+            <span>🌡 Temperature : SAFE</span>
+            <small>10:45:22</small>
+        </div>
+
+        <div class="alert-item safe">
+            <span>💧 Humidity : SAFE</span>
+            <small>10:45:24</small>
+        </div>
+
+        <div class="alert-item safe">
+            <span>💡 Ambient Light : SAFE</span>
+            <small>10:45:28</small>
+        </div>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/charts.js"></script>
+    
+    <script src="js/app.js"></script>
+
+</body>
+
+</html>

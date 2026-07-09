@@ -1,0 +1,147 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#0b1220;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.login-container{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.login-box{
+    width:420px;
+    background:#1b2435;
+    padding:40px;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:0 10px 30px rgba(0,0,0,.5);
+}
+
+.logo {
+    height: 45px;                                 /* Set a fixed height */
+    width: auto;                                  /* Let width scale naturally */
+    margin-bottom: 25px;
+    
+    background-color: rgba(255, 255, 255, 0.95);  /* Clean white badge background */
+    padding: 6px 18px;                            /* Padding inside the badge */
+    border-radius: 30px;                          /* Makes it a sleek pill shape */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);    /* Soft shadow to separate from background */
+    display: inline-flex;                         /* Keeps it centered neatly */
+    align-items: center;
+    justify-content: center;
+}
+
+h1{
+    color:#ffffff;
+    font-size:28px;
+    margin-bottom:8px;
+}
+
+h2{
+    color:#00d4ff;
+    font-size:18px;
+    margin-bottom:10px;
+}
+
+.subtitle{
+    color:#c7d2fe;
+    font-size:14px;
+    margin-bottom:30px;
+}
+
+.input-box{
+    text-align:left;
+    margin-bottom:20px;
+}
+
+.input-box label{
+    display:block;
+    color:#ffffff;
+    margin-bottom:8px;
+    font-size:14px;
+}
+
+.input-box input{
+    width:100%;
+    padding:12px;
+    border:none;
+    outline:none;
+    border-radius:10px;
+    background:#2c3a52;
+    color:#ffffff;
+    font-size:15px;
+}
+
+.input-box input::placeholder{
+    color:#aab4c8;
+}
+
+.remember{
+    color:white;
+    text-align:left;
+    margin-bottom:25px;
+}
+
+.login-btn{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#00b4ff;
+    color:white;
+    font-size:17px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.login-btn:hover{
+    background:#0095d9;
+}
+.password-box{
+
+position:relative;
+
+}
+
+.password-box input{
+
+padding-right:45px;
+
+}
+
+.eye{
+
+position:absolute;
+
+right:15px;
+
+top:50%;
+
+transform:translateY(-50%);
+
+cursor:pointer;
+
+font-size:18px;
+
+color:white;
+
+}
+
+.eye:hover{
+
+color:#00bfff;
+
+}

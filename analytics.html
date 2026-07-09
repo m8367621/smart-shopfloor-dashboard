@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Analytics | Smart Shopfloor Dashboard</title>
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/dashboard.css">
+
+</head>
+
+<body>
+
+<div class="analytics-page">
+
+    <h1>📊 Analytics Dashboard</h1>
+
+    <p>View trends, statistics and predictive analysis for all sensors.</p>
+
+<!-- ================= ANALYTICS SUMMARY ================= -->
+    <div class="analytics-card">
+        <div class="analytics-card">
+            <h3>🌫 PM1.0</h3>
+            <h2>12 µg/m³</h2>
+            <p>Safe Range</p>
+        </div>
+
+        <div class="analytics-card">
+            <h3>🌫 PM2.5</h3>
+            <h2>28 µg/m³</h2>
+            <p>Safe Range</p>
+        </div>
+
+        <div class="analytics-card">
+            <h3>🌫 PM10</h3>
+            <h2>45 µg/m³</h2>
+            <p>Safe Range</p>
+        </div>
+
+        <div class="analytics-card">
+            <h3>🔊 Noise Level</h3>
+            <h2>68 dB</h2>
+            <p>Normal Working Condition</p>
+        </div>
+
+        <div class="analytics-card">
+            <h3>🌡 Temperature</h3>
+            <h2>30°C</h2>
+            <p>Normal Range</p>
+        </div>
+
+        <div class="analytics-card">
+            <h3>💧 Humidity</h3>
+            <h2>58%</h2>
+            <p>Comfort Zone</p>
+        </div>
+
+        <div class="analytics-card">
+            <h3>💡 Ambient Light</h3>
+            <h2>420 Lux</h2>
+            <p>Suitable Lighting</p>
+        </div>
+
+        <div class="analytics-card">
+            <h3>🚦 Overall Safety</h3>
+            <h2>SAFE</h2>
+            <p>All Sensors Normal</p>
+        </div>
+
+    </div>
+    <!-- ================= ANALYTICS CHARTS ================= -->
+
+    <div class="analytics-chart-section">
+
+        <h2>📈 Sensor Trend Analysis</h2>
+
+        <div class="analytics-chart-grid">
+
+            <div class="analytics-chart-card">
+                <h3>PM Trend Analysis</h3>
+                <canvas id="pmTrendChart"></canvas>
+            </div>
+
+            <div class="analytics-chart-card">
+                <h3>Noise Trend Analysis</h3>
+                <canvas id="noiseTrendChart"></canvas>
+            </div>
+
+            <div class="analytics-chart-card">
+                <h3>Temperature & Humidity</h3>
+                <canvas id="tempHumidityChart"></canvas>
+            </div>
+
+            <div class="analytics-chart-card">
+                <h3>Ambient Light Trend</h3>
+                <canvas id="lightTrendChart"></canvas>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="js/analytics.js"></script>
+
+</body>
+</html>

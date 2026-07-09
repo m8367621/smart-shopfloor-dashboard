@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Settings</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+.settings-container{
+    margin-left:280px;
+    padding:20px;
+}
+
+.box{
+    background:#1e293b;
+    color:white;
+    padding:25px;
+    margin-bottom:20px;
+    border-radius:15px;
+}
+
+h1{
+    color:white;
+}
+
+h2{
+    color:#38bdf8;
+}
+
+label{
+    display:inline-block;
+    width:250px;
+    margin:10px;
+}
+
+input[type="number"]{
+    width:120px;
+    padding:8px;
+    border-radius:5px;
+    border:none;
+}
+
+
+input[type="checkbox"]{
+    transform:scale(1.3);
+    margin:10px;
+}
+
+
+button{
+
+    padding:12px 25px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    margin:10px;
+    font-size:16px;
+
+}
+
+
+.save{
+
+background:#22c55e;
+color:white;
+
+}
+
+
+.reset{
+
+background:#ef4444;
+color:white;
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="settings-container">
+
+
+<h1>System Settings</h1>
+
+
+
+<!-- Dust Sensor -->
+
+<div class="box">
+
+<h2>PMS7003 Dust Sensor Settings</h2>
+
+<label>PM1.0 Warning Level:</label>
+<input type="number" value="50"> µg/m³
+
+<br>
+
+<label>PM1.0 Danger Level:</label>
+<input type="number" value="100"> µg/m³
+
+<br><br>
+
+<label>PM2.5 Warning Level:</label>
+<input type="number" value="60"> µg/m³
+
+<br>
+
+<label>PM2.5 Danger Level:</label>
+<input type="number" value="120"> µg/m³
+
+<br><br>
+
+<label>PM10 Warning Level:</label>
+<input type="number" value="100"> µg/m³
+
+<br>
+
+<label>PM10 Danger Level:</label>
+<input type="number" value="200"> µg/m³
+
+
+</div>
+
+
+
+
+
+<!-- Sound -->
+
+<div class="box">
+
+<h2>INMP441 Sound Sensor Settings</h2>
+
+<label>Sound Warning Level:</label>
+<input type="number" value="80"> dB
+
+<br>
+
+<label>Sound Danger Level:</label>
+<input type="number" value="100"> dB
+
+</div>
+
+
+
+
+
+
+<!-- Temperature Humidity -->
+
+<div class="box">
+
+<h2>SHT41 Environment Settings</h2>
+
+<label>Temperature Warning:</label>
+<input type="number" value="35"> °C
+
+<br>
+
+<label>Temperature Danger:</label>
+<input type="number" value="45"> °C
+
+<br><br>
+
+<label>Humidity Warning:</label>
+<input type="number" value="80"> %
+
+<br>
+
+<label>Humidity Danger:</label>
+<input type="number" value="90"> %
+
+</div>
+
+
+
+
+
+
+<!-- Light -->
+
+<div class="box">
+
+<h2>BH1750 Ambient Light Settings</h2>
+
+<label>Light Warning Level:</label>
+<input type="number" value="500"> Lux
+
+<br>
+
+<label>Light Danger Level:</label>
+<input type="number" value="1000"> Lux
+
+
+</div>
+
+
+
+
+<!-- Alert -->
+
+<div class="box">
+
+
+<h2>Alert Settings</h2>
+
+
+<input type="checkbox" checked>
+
+Enable Tower Lamp Alert
+
+
+<br>
+
+
+<input type="checkbox" checked>
+
+Enable Dashboard Alert
+
+
+<br>
+
+
+<input type="checkbox">
+
+Enable Sound Alert
+
+
+
+</div>
+
+
+
+
+
+
+
+<!-- Device -->
+
+<div class="box">
+
+
+<h2>Device Information</h2>
+
+
+<p>Device Name : Smart Shopfloor Monitor</p>
+
+
+<p>Controller : ESP32</p>
+
+
+<p>WiFi Status : Connected ✅</p>
+
+
+<p>Cloud Status : Online</p>
+
+
+</div>
+
+
+
+
+
+
+<button class="save">
+
+SAVE SETTINGS
+
+</button>
+
+
+
+<button class="reset">
+
+RESET DEFAULT
+
+</button>
+
+
+
+</div>
+<script>
+
+const inputs = document.querySelectorAll("input[type='number']");
+
+
+// Save settings
+
+document.querySelector(".save").onclick = function(){
+
+    let settings = [];
+
+    inputs.forEach(input=>{
+        settings.push(input.value);
+    });
+
+
+    localStorage.setItem("shopfloorSettings",JSON.stringify(settings));
+
+
+    alert("Settings Saved Successfully");
+
+};
+
+
+
+// Reset settings
+
+document.querySelector(".reset").onclick = function(){
+
+    localStorage.removeItem("shopfloorSettings");
+
+    alert("Settings Reset");
+
+    location.reload();
+
+};
+
+
+
+// Load saved settings
+
+window.onload = function(){
+
+    let saved = localStorage.getItem("shopfloorSettings");
+
+
+    if(saved){
+
+        let settings = JSON.parse(saved);
+
+
+        inputs.forEach((input,index)=>{
+
+            input.value = settings[index];
+
+        });
+
+    }
+
+};
+
+
+</script>
+
+</body>
+
+
+</html>
