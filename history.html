@@ -12,6 +12,9 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 
 <body>
@@ -269,23 +272,45 @@ tr[i].style.display="none";
 
 
 // =============================
-// PDF Download (Demo)
+// PDF Download 
 // =============================
+document.querySelector(".success-btn").onclick = function () {
 
-document.querySelector(".success-btn").onclick=function(){
+const { jsPDF } = window.jspdf;
 
-alert("PDF Report Download Started");
+const doc = new jsPDF();
+
+doc.setFontSize(18);
+doc.text("Smart Shopfloor Environment Monitoring System", 20, 20);
+
+doc.setFontSize(14);
+doc.text("Sensor History Report", 20, 35);
+
+doc.setFontSize(11);
+doc.text("Generated on: " + new Date().toLocaleString(), 20, 45);
+
+doc.text("Total Records : " + document.getElementById("totalRecords").innerText, 20, 60);
+doc.text("Safe : " + document.getElementById("safeCount").innerText, 20, 70);
+doc.text("Warning : " + document.getElementById("warningCount").innerText, 20, 80);
+doc.text("Danger : " + document.getElementById("dangerCount").innerText, 20, 90);
+
+doc.save("Shopfloor_Report.pdf");
 
 };
 
 
 // =============================
-// Excel Download (Demo)
+// Excel Download 
 // =============================
+document.querySelector(".excel-btn").onclick = function () {
 
-document.querySelector(".excel-btn").onclick=function(){
+let table = document.getElementById("historyTable");
 
-alert("Excel Report Download Started");
+let workbook = XLSX.utils.table_to_book(table, {
+    sheet: "History"
+});
+
+XLSX.writeFile(workbook, "Shopfloor_History_Report.xlsx");
 
 };
 
