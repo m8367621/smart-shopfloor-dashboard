@@ -996,3 +996,31 @@ font-size:13px;
 }
 
 }
+/* Fix History Heading */
+
+h1{
+    color:white;
+}
+
+.page-subtitle{
+    color:#cbd5e1;
+}
+
+/* Fix Date Input */
+
+.filter-box input[type="date"]{
+    background:#1e293b;
+    color:white;
+    border:1px solid #475569;
+}
+
+.filter-box input[type="date"]::-webkit-calendar-picker-indicator{
+    filter:invert(1);
+    cursor:pointer;
+}
+
+/* Fix Placeholder */
+
+.filter-box input::placeholder{
+    color:#cbd5e1;
+}
