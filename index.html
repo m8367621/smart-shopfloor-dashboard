@@ -22,6 +22,9 @@
 </head>
 
 <body>
+    <button class="menu-btn" onclick="toggleSidebar()">
+☰
+    </button>
 
     <div class="sidebar">
 
@@ -275,6 +278,12 @@
     <script src="js/charts.js"></script>
     
     <script src="js/app.js"></script>
+    <script>
 
+    function toggleSidebar() {
+    document.querySelector(".sidebar").classList.toggle("active");
+    }
+
+    </script>
 </body>
 </html>
