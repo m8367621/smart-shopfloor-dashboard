@@ -781,3 +781,42 @@ body{
     color:#22c55e;
     font-size:32px;
 }
+/* ========================= */
+/* Mobile Responsive Design */
+/* ========================= */
+
+@media (max-width: 768px){
+
+.sidebar{
+    width:220px;
+    left:-220px;
+    transition:0.3s;
+}
+
+.sidebar.active{
+    left:0;
+}
+
+.main-content{
+    margin-left:0;
+    width:100%;
+    padding:15px;
+}
+
+.cards{
+    grid-template-columns:1fr;
+}
+
+.chart-container{
+    grid-template-columns:1fr;
+}
+
+.sensor-grid{
+    grid-template-columns:1fr;
+}
+
+table{
+    font-size:12px;
+}
+
+}
