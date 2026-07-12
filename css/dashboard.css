@@ -794,10 +794,10 @@ table{
 }
 
 .history-filter{
-    display:flex;
-    align-items:flex-end;
+    display:grid;
+    grid-template-columns:180px 180px 1fr auto auto auto;
     gap:15px;
-    flex-wrap:wrap;
+    align-items:end;
     margin-bottom:30px;
 }
 
@@ -822,23 +822,19 @@ table{
 }
 
 .filter-buttons{
-    display:flex;
-    gap:15px;
-    align-items:flex-end;
+    display:contents;
 }
 
 .primary-btn,
 .success-btn,
 .excel-btn{
-
     border:none;
     border-radius:10px;
-    padding:12px 20px;
+    padding:14px 22px;
     color:white;
     font-size:15px;
     cursor:pointer;
-    transition:.3s;
-
+    white-space:nowrap;
 }
 
 .primary-btn{
