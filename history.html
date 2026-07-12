@@ -42,11 +42,19 @@ View, search, analyze and download previous sensor readings.
 </div>
 
 <div class="filter-box">
-<label>Search</label>
-<input
-type="text"
-id="searchInput"
-placeholder="Search sensor value...">
+    <label>Search</label>
+
+    <div class="search-box">
+
+        <span class="search-icon">🔍</span>
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search sensor value...">
+
+    </div>
+
 </div>
 
 <div class="filter-buttons">
@@ -386,7 +394,7 @@ document.querySelector(".primary-btn").onclick = function () {
 
         row.style.display = showRow ? "" : "none";
     }
-
+    calculateSummary();
 };
 
 
@@ -394,42 +402,40 @@ document.querySelector(".primary-btn").onclick = function () {
 // Automatic Statistics
 // =============================
 
-function calculateSummary(){
+function calculateSummary() {
 
-let table=document.getElementById("historyTable");
+    let table = document.getElementById("historyTable");
+    let rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
 
-let rows=table.getElementsByTagName("tbody")[0].rows;
+    let total = 0;
+    let safe = 0;
+    let warning = 0;
+    let danger = 0;
 
-let safe=0;
-let warning=0;
-let danger=0;
+    for (let i = 0; i < rows.length; i++) {
 
-for(let i=0;i<rows.length;i++){
+        if (rows[i].style.display === "none")
+            continue;
 
-let status=rows[i].cells[9].innerText;
+        total++;
 
-if(status.includes("Safe"))
-safe++;
+        let status = rows[i].cells[9].innerText;
 
-else if(status.includes("Warning"))
-warning++;
+        if (status.includes("Safe"))
+            safe++;
 
-else if(status.includes("Danger"))
-danger++;
+        else if (status.includes("Warning"))
+            warning++;
 
+        else if (status.includes("Danger"))
+            danger++;
+    }
+
+    document.getElementById("totalRecords").innerHTML = total;
+    document.getElementById("safeCount").innerHTML = safe;
+    document.getElementById("warningCount").innerHTML = warning;
+    document.getElementById("dangerCount").innerHTML = danger;
 }
-
-document.getElementById("totalRecords").innerHTML=rows.length;
-
-document.getElementById("safeCount").innerHTML=safe;
-
-document.getElementById("warningCount").innerHTML=warning;
-
-document.getElementById("dangerCount").innerHTML=danger;
-
-}
-
-calculateSummary();
 
 </script>
 
