@@ -304,13 +304,40 @@ doc.save("Shopfloor_Report.pdf");
 // =============================
 document.querySelector(".excel-btn").onclick = function () {
 
-let table = document.getElementById("historyTable");
+    let wb = XLSX.utils.book_new();
 
-let workbook = XLSX.utils.table_to_book(table, {
-    sheet: "History"
-});
+    let data = [];
 
-XLSX.writeFile(workbook, "Shopfloor_History_Report.xlsx");
+    data.push([
+        "Date",
+        "Time",
+        "PM1.0",
+        "PM2.5",
+        "PM10",
+        "Noise",
+        "Temperature",
+        "Humidity",
+        "Light",
+        "Status"
+    ]);
+
+    let rows = document.querySelectorAll("#historyTable tbody tr");
+
+    rows.forEach(row => {
+        let rowData = [];
+
+        row.querySelectorAll("td").forEach(cell => {
+            rowData.push(cell.innerText);
+        });
+
+        data.push(rowData);
+    });
+
+    let ws = XLSX.utils.aoa_to_sheet(data);
+
+    XLSX.utils.book_append_sheet(wb, ws, "Sensor History");
+
+    XLSX.writeFile(wb, "Smart_Shopfloor_History_Report.xlsx");
 
 };
 
@@ -319,9 +346,46 @@ XLSX.writeFile(workbook, "Shopfloor_History_Report.xlsx");
 // Search Button
 // =============================
 
-document.querySelector(".primary-btn").onclick=function(){
+document.querySelector(".primary-btn").onclick = function () {
 
-alert("Searching Records...");
+    let fromDate = document.getElementById("fromDate").value;
+    let toDate = document.getElementById("toDate").value;
+    let search = document.getElementById("searchInput").value.toUpperCase();
+
+    let table = document.getElementById("historyTable");
+    let rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+
+    for (let i = 0; i < rows.length; i++) {
+
+        let row = rows[i];
+
+        let rowDate = row.cells[0].innerText;
+        let rowText = row.innerText.toUpperCase();
+
+        let showRow = true;
+
+        // Search Filter
+        if (search !== "" && !rowText.includes(search)) {
+            showRow = false;
+        }
+
+        // Date Filter
+        if (fromDate !== "" || toDate !== "") {
+
+            let parts = rowDate.split("-");
+            let formattedDate = parts[2] + "-" + parts[1] + "-" + parts[0];
+
+            if (fromDate !== "" && formattedDate < fromDate) {
+                showRow = false;
+            }
+
+            if (toDate !== "" && formattedDate > toDate) {
+                showRow = false;
+            }
+        }
+
+        row.style.display = showRow ? "" : "none";
+    }
 
 };
 
