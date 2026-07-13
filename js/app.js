@@ -1,3 +1,5 @@
+// ================= CLOCK =================
+
 function updateClock() {
 
     const now = new Date();
@@ -12,16 +14,28 @@ function updateClock() {
             second: "2-digit",
             hour12: true
         });
+
 }
 
 setInterval(updateClock, 1000);
 updateClock();
+
+
+// ================= TOWER LAMP =================
+
+const greenLamp = document.querySelector(".lamp.green");
+const yellowLamp = document.querySelector(".lamp.yellow");
+const redLamp = document.querySelector(".lamp.red");
+
+
+// ================= UPDATE DASHBOARD =================
 
 async function updateStatus() {
 
     try {
 
         const response = await fetch("/api/data");
+
         const data = await response.json();
 
         // ================= STATUS =================
@@ -32,13 +46,58 @@ async function updateStatus() {
 
         // ================= SENSOR VALUES =================
 
-        document.getElementById("pm1Value").textContent = data.pm1;
-        document.getElementById("pm25Value").textContent = data.pm25;
-        document.getElementById("pm10Value").textContent = data.pm10;
-        document.getElementById("noiseValue").textContent = data.noise;
-        document.getElementById("tempValue").textContent = data.temperature;
-        document.getElementById("humidityValue").textContent = data.humidity;
-        document.getElementById("lightValue").textContent = data.light;
+        document.getElementById("pm1Value").textContent =
+            data.esp32 === "Connected" ? data.pm1 : "--";
+
+        document.getElementById("pm25Value").textContent =
+            data.esp32 === "Connected" ? data.pm25 : "--";
+
+        document.getElementById("pm10Value").textContent =
+            data.esp32 === "Connected" ? data.pm10 : "--";
+
+        document.getElementById("noiseValue").textContent =
+            data.esp32 === "Connected" ? data.noise : "--";
+
+        document.getElementById("tempValue").textContent =
+            data.esp32 === "Connected" ? data.temperature : "--";
+
+        document.getElementById("humidityValue").textContent =
+            data.esp32 === "Connected" ? data.humidity : "--";
+
+        document.getElementById("lightValue").textContent =
+            data.esp32 === "Connected" ? data.light : "--";
+        // ================= ESP32 DISCONNECTED =================
+
+        if (data.esp32 !== "Connected") {
+
+            updateSensorCards({
+                pm1: 0,
+                pm25: 0,
+                pm10: 0,
+                noise: 0,
+                temperature: 0,
+                humidity: 0,
+                light: 0
+            });
+
+            greenLamp.classList.remove("active");
+            yellowLamp.classList.remove("active");
+            redLamp.classList.remove("active");
+
+            document.getElementById("overallStatus").className = "overall-status";
+            document.getElementById("overallText").innerHTML = "NO DATA";
+            document.getElementById("overallMessage").innerHTML =
+                "ESP32 is not connected.";
+
+            document.getElementById("towerText").innerHTML =
+                "Tower Lamp Offline";
+
+            return;
+        }
+
+        // ================= UPDATE SENSOR CARD COLORS =================
+
+        updateSensorCards(data);
 
         // ================= LIVE CHARTS =================
 
@@ -53,118 +112,103 @@ async function updateStatus() {
 
         let level = "SAFE";
 
-        // PM1.0
-        if(data.pm1 > 100){
+        if (
+            data.pm1 >= 100 ||
+            data.pm25 >= 75 ||
+            data.pm10 >= 150 ||
+            data.noise >= 90 ||
+            data.temperature >= 40
+        ) {
+
             level = "CRITICAL";
+
         }
-        else if(data.pm1 > 50 && level!="CRITICAL"){
+        else if (
+
+            data.pm1 >= 50 ||
+            data.pm25 >= 35 ||
+            data.pm10 >= 80 ||
+            data.noise >= 75 ||
+            data.temperature >= 35 ||
+            data.humidity >= 70 ||
+            data.light <= 150
+
+        ) {
+
             level = "WARNING";
+
         }
 
-        // PM2.5
-        if(data.pm25 > 75){
-            level = "CRITICAL";
-        }
-        else if(data.pm25 > 35 && level=="SAFE"){
-            level = "WARNING";
-        }
+        const overall = document.getElementById("overallStatus");
+        const overallText = document.getElementById("overallText");
+        const overallMessage = document.getElementById("overallMessage");
 
-        // PM10
-        if(data.pm10 > 150){
-            level = "CRITICAL";
-        }
-        else if(data.pm10 > 80 && level=="SAFE"){
-            level = "WARNING";
-        }
-
-        // Noise
-        if(data.noise > 90){
-            level = "CRITICAL";
-        }
-        else if(data.noise > 75 && level=="SAFE"){
-            level = "WARNING";
-        }
-
-        // Temperature
-        if(data.temperature > 40){
-            level = "CRITICAL";
-        }
-        else if(data.temperature > 35 && level=="SAFE"){
-            level = "WARNING";
-        }
-
-        // Humidity
-        if(data.humidity > 80){
-            level = "WARNING";
-        }
-
-        // Light
-        if(data.light < 150){
-            level = "WARNING";
-        }
-
-        // ================= DISPLAY =================
-
-        const overall=document.getElementById("overallStatus");
-        const text=document.getElementById("overallText");
-        const msg=document.getElementById("overallMessage");
-
-        overall.className="overall-status";
+        overall.className = "overall-status";
 
         greenLamp.classList.remove("active");
         yellowLamp.classList.remove("active");
         redLamp.classList.remove("active");
 
-        if(level==="SAFE"){
+        if (level === "SAFE") {
 
             overall.classList.add("safe");
 
-            text.innerHTML="SAFE";
+            overallText.innerHTML = "SAFE";
 
-            msg.innerHTML="All environmental parameters are within safe limits.";
+            overallMessage.innerHTML =
+                "All environmental parameters are within safe limits.";
 
             greenLamp.classList.add("active");
 
-            document.getElementById("towerText").innerHTML="GREEN - Normal Condition";
+            document.getElementById("towerText").innerHTML =
+                "GREEN - Normal Condition";
 
         }
-
-        else if(level==="WARNING"){
+        else if (level === "WARNING") {
 
             overall.classList.add("warning");
 
-            text.innerHTML="WARNING";
+            overallText.innerHTML = "WARNING";
 
-            msg.innerHTML="One or more sensor values are approaching unsafe limits.";
+            overallMessage.innerHTML =
+                "One or more sensors crossed the warning threshold.";
 
             yellowLamp.classList.add("active");
 
-            document.getElementById("towerText").innerHTML="YELLOW - Warning Condition";
+            document.getElementById("towerText").innerHTML =
+                "YELLOW - Warning Condition";
 
         }
-
-        else{
+        else {
 
             overall.classList.add("danger");
 
-            text.innerHTML="CRITICAL";
+            overallText.innerHTML = "CRITICAL";
 
-            msg.innerHTML="Unsafe environment detected. Immediate attention required.";
+            overallMessage.innerHTML =
+                "Critical environmental condition detected.";
 
             redLamp.classList.add("active");
 
-            document.getElementById("towerText").innerHTML="RED - Critical Condition";
-            
+            document.getElementById("towerText").innerHTML =
+                "RED - Critical Condition";
+
         }
 
-        updateSensorCards(data);
-    } catch (err) {
+    }
+    catch(err){
 
         console.log(err);
 
     }
 
 }
+
+setInterval(updateStatus,1000);
+
+updateStatus();
+// ================= SENSOR CARD STATUS =================
+
 function updateSensorCards(data){
 
     updateCard("pm1Card", data.pm1, 50, 100);
@@ -172,64 +216,73 @@ function updateSensorCards(data){
     updateCard("pm10Card", data.pm10, 80, 150);
     updateCard("noiseCard", data.noise, 75, 90);
     updateCard("tempCard", data.temperature, 35, 40);
-    updateCard("humidityCard", data.humidity, 70, 80);
-    updateCard("lightCard", data.light, 150, 80, true);
+    updateCard("humidityCard", data.humidity, 70, 85);
+
+    // Light sensor (low value is bad)
+    updateLightCard("lightCard", data.light);
 
 }
 
-function updateCard(cardId,value,warning,danger,reverse=false){
+function updateCard(cardId, value, warning, critical){
 
-    const card=document.getElementById(cardId);
-    const badge=card.querySelector(".status");
+    const card = document.getElementById(cardId);
+    const badge = card.querySelector(".status");
 
     card.classList.remove("safe","warning","danger");
     badge.classList.remove("green","yellow","red");
 
-    let state="SAFE";
+    if(value >= critical){
 
-    if(!reverse){
-
-        if(value>=danger){
-            state="CRITICAL";
-        }
-        else if(value>=warning){
-            state="WARNING";
-        }
-
-    }else{
-
-        if(value<=danger){
-            state="CRITICAL";
-        }
-        else if(value<=warning){
-            state="WARNING";
-        }
+        card.classList.add("danger");
+        badge.classList.add("red");
+        badge.textContent = "CRITICAL";
 
     }
-
-    if(state==="SAFE"){
-
-        card.classList.add("safe");
-        badge.classList.add("green");
-        badge.innerHTML="SAFE";
-
-    }
-    else if(state==="WARNING"){
+    else if(value >= warning){
 
         card.classList.add("warning");
         badge.classList.add("yellow");
-        badge.innerHTML="WARNING";
+        badge.textContent = "WARNING";
 
     }
     else{
 
-        card.classList.add("danger");
-        badge.classList.add("red");
-        badge.innerHTML="CRITICAL";
+        card.classList.add("safe");
+        badge.classList.add("green");
+        badge.textContent = "SAFE";
 
     }
 
 }
-setInterval(updateStatus,1000);
 
-updateStatus();
+function updateLightCard(cardId, value){
+
+    const card = document.getElementById(cardId);
+    const badge = card.querySelector(".status");
+
+    card.classList.remove("safe","warning","danger");
+    badge.classList.remove("green","yellow","red");
+
+    if(value < 80){
+
+        card.classList.add("danger");
+        badge.classList.add("red");
+        badge.textContent = "CRITICAL";
+
+    }
+    else if(value < 150){
+
+        card.classList.add("warning");
+        badge.classList.add("yellow");
+        badge.textContent = "WARNING";
+
+    }
+    else{
+
+        card.classList.add("safe");
+        badge.classList.add("green");
+        badge.textContent = "GOOD";
+
+    }
+
+}

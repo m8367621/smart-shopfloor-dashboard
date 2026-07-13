@@ -1,43 +1,40 @@
-// ---------- Live Charts ----------
+// ================= LIVE CHARTS =================
 
-const labels = [];
 const maxPoints = 20;
 
 function getTime() {
-    const now = new Date();
-    return now.toLocaleTimeString([], {
+    return new Date().toLocaleTimeString("en-US", {
         hour: "2-digit",
         minute: "2-digit",
-        second: "2-digit"
+        second: "2-digit",
+        hour12: true
     });
 }
 
-function createChart(canvasId, label, color) {
+function createChart(canvasId, label, color, maxY) {
 
     return new Chart(document.getElementById(canvasId), {
 
         type: "line",
 
         data: {
-            labels: labels,
+            labels: [],
             datasets: [{
                 label: label,
                 data: [],
                 borderColor: color,
                 backgroundColor: color,
+                borderWidth: 2,
                 fill: false,
                 tension: 0.4,
-                pointRadius: 3,
-                pointHoverRadius: 5
+                pointRadius: 3
             }]
         },
 
         options: {
 
             responsive: true,
-
             maintainAspectRatio: false,
-
             animation: false,
 
             plugins: {
@@ -50,14 +47,22 @@ function createChart(canvasId, label, color) {
 
                 x: {
                     ticks: {
-                        color: "white"
+                        color: "white",
+                        maxTicksLimit: 6
+                    },
+                    grid: {
+                        color: "#444"
                     }
                 },
 
                 y: {
-                    beginAtZero: true,
+                    min: 0,
+                    max: maxY,
                     ticks: {
                         color: "white"
+                    },
+                    grid: {
+                        color: "#444"
                     }
                 }
 
@@ -69,31 +74,29 @@ function createChart(canvasId, label, color) {
 
 }
 
-// -------- Create Charts --------
+// ================= CREATE ALL CHARTS =================
 
-const pm1Chart = createChart("pm1Chart","PM1.0","#00e676");
+const pm1Chart = createChart("pm1Chart","PM1.0","#00e676",200);
 
-const pm25Chart = createChart("pm25Chart","PM2.5","#03a9f4");
+const pm25Chart = createChart("pm25Chart","PM2.5","#00bcd4",200);
 
-const pm10Chart = createChart("pm10Chart","PM10","#ff9800");
+const pm10Chart = createChart("pm10Chart","PM10","#ff9800",300);
 
-const noiseChart = createChart("noiseChart","Noise","#ff5252");
+const noiseChart = createChart("noiseChart","Noise","#ff5252",120);
 
-const tempChart = createChart("tempChart","Temperature","#29b6f6");
+const tempChart = createChart("tempChart","Temperature","#42a5f5",60);
 
-const humidityChart = createChart("humidityChart","Humidity","#ab47bc");
+const humidityChart = createChart("humidityChart","Humidity","#ab47bc",100);
 
-const lightChart = createChart("lightChart","Light","#ffd600");
+const lightChart = createChart("lightChart","Light","#ffd600",60000);
 
+// ================= UPDATE CHART =================
 
-// -------- Update Chart --------
+function updateChart(chart, value) {
 
-function updateChart(chart,value){
-
-    if(chart.data.labels.length>=maxPoints){
+    if (chart.data.labels.length >= maxPoints) {
 
         chart.data.labels.shift();
-
         chart.data.datasets[0].data.shift();
 
     }

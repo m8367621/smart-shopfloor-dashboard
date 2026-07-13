@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-const path = require("path");
 
 const app = express();
 const PORT = 3000;
@@ -12,6 +11,7 @@ app.use(express.static(__dirname));
 let lastSeen = 0;
 
 let sensorData = {
+
     esp32: "Not Connected",
     wifi: "Not Connected",
     cloud: "Online",
@@ -19,39 +19,74 @@ let sensorData = {
     pm1: 0,
     pm25: 0,
     pm10: 0,
+
     noise: 0,
+
     temperature: 0,
     humidity: 0,
+
     light: 0
+
 };
 
-// ESP32 sends data here
+// ================= ESP32 SENDS DATA =================
+
 app.post("/api/data", (req, res) => {
 
     lastSeen = Date.now();
 
     sensorData = {
+
         ...sensorData,
+
         ...req.body,
+
         esp32: "Connected",
+
         wifi: "Connected",
+
         cloud: "Online"
+
     };
 
-    res.json({ success: true });
+    res.json({
+        success: true
+    });
+
 });
 
-// Dashboard reads data here
+// ================= DASHBOARD READS DATA =================
+
 app.get("/api/data", (req, res) => {
 
     if (Date.now() - lastSeen > 5000) {
+
         sensorData.esp32 = "Not Connected";
         sensorData.wifi = "Not Connected";
+
+        sensorData.pm1 = 0;
+        sensorData.pm25 = 0;
+        sensorData.pm10 = 0;
+
+        sensorData.noise = 0;
+
+        sensorData.temperature = 0;
+        sensorData.humidity = 0;
+
+        sensorData.light = 0;
+
     }
 
     res.json(sensorData);
+
 });
 
 app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+
+    console.log("====================================");
+    console.log(" Smart Shopfloor Server Started");
+    console.log(" http://localhost:3000");
+    console.log(" Waiting for ESP32...");
+    console.log("====================================");
+
 });
