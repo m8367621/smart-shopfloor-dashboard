@@ -19,23 +19,22 @@ updateClock();
 
 async function updateStatus() {
 
-    try {
+    const response = await fetch("/api/data");
+    const data = await response.json();
 
-        const response = await fetch("/api/data");
-        const data = await response.json();
+    // Status
+    document.getElementById("espStatus").textContent = data.esp32;
+    document.getElementById("wifiStatus").textContent = data.wifi;
+    document.getElementById("cloudStatus").textContent = data.cloud;
 
-        document.getElementById("espStatus").textContent = data.esp32;
-        document.getElementById("wifiStatus").textContent = data.wifi;
-        document.getElementById("cloudStatus").textContent = data.cloud;
-
-    } catch (error) {
-
-        document.getElementById("espStatus").textContent = "Not Connected";
-        document.getElementById("wifiStatus").textContent = "Not Connected";
-        document.getElementById("cloudStatus").textContent = "Offline";
-
-    }
-
+    // Sensor values
+    document.getElementById("pm1Value").textContent = data.pm1;
+    document.getElementById("pm25Value").textContent = data.pm25;
+    document.getElementById("pm10Value").textContent = data.pm10;
+    document.getElementById("noiseValue").textContent = data.noise;
+    document.getElementById("tempValue").textContent = data.temperature;
+    document.getElementById("humidityValue").textContent = data.humidity;
+    document.getElementById("lightValue").textContent = data.light;
 }
 
 setInterval(updateStatus, 1000);
