@@ -34,7 +34,7 @@ async function updateStatus() {
 
     try {
 
-        const response = await fetch("/api/data");
+        const response = await fetch("https://smart-shopfloor-dashboard.onrender.com/api/data");
 
         const data = await response.json();
 
