@@ -225,6 +225,8 @@ function updateSensorCards(data){
 
 function updateCard(cardId, value, warning, critical){
 
+    value = Number(value);
+
     const card = document.getElementById(cardId);
     const badge = card.querySelector(".status");
 
@@ -235,21 +237,21 @@ function updateCard(cardId, value, warning, critical){
 
         card.classList.add("danger");
         badge.classList.add("red");
-        badge.textContent = "CRITICAL";
+        badge.innerHTML = "CRITICAL";
 
     }
     else if(value >= warning){
 
         card.classList.add("warning");
         badge.classList.add("yellow");
-        badge.textContent = "WARNING";
+        badge.innerHTML = "WARNING";
 
     }
     else{
 
         card.classList.add("safe");
         badge.classList.add("green");
-        badge.textContent = "SAFE";
+        badge.innerHTML = "SAFE";
 
     }
 
@@ -257,31 +259,34 @@ function updateCard(cardId, value, warning, critical){
 
 function updateLightCard(cardId, value){
 
+    value = Number(value);
+
     const card = document.getElementById(cardId);
     const badge = card.querySelector(".status");
 
     card.classList.remove("safe","warning","danger");
     badge.classList.remove("green","yellow","red");
 
-    if(value < 80){
+    // Bright light is SAFE
+    if(value >= 500){
 
-        card.classList.add("danger");
-        badge.classList.add("red");
-        badge.textContent = "CRITICAL";
+        card.classList.add("safe");
+        badge.classList.add("green");
+        badge.innerHTML = "SAFE";
 
     }
-    else if(value < 150){
+    else if(value >= 150){
 
         card.classList.add("warning");
         badge.classList.add("yellow");
-        badge.textContent = "WARNING";
+        badge.innerHTML = "WARNING";
 
     }
     else{
 
-        card.classList.add("safe");
-        badge.classList.add("green");
-        badge.textContent = "GOOD";
+        card.classList.add("danger");
+        badge.classList.add("red");
+        badge.innerHTML = "CRITICAL";
 
     }
 
