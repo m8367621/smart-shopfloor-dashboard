@@ -237,21 +237,21 @@ function updateCard(cardId, value, warning, critical){
 
         card.classList.add("danger");
         badge.classList.add("red");
-        badge.innerHTML = "CRITICAL";
+        badge.textContent = "CRITICAL";
 
     }
     else if(value >= warning){
 
         card.classList.add("warning");
         badge.classList.add("yellow");
-        badge.innerHTML = "WARNING";
+        badge.textContent = "WARNING";
 
     }
     else{
 
         card.classList.add("safe");
         badge.classList.add("green");
-        badge.innerHTML = "SAFE";
+        badge.textContent = "SAFE";
 
     }
 
@@ -267,26 +267,30 @@ function updateLightCard(cardId, value){
     card.classList.remove("safe","warning","danger");
     badge.classList.remove("green","yellow","red");
 
-    // Bright light is SAFE
-    if(value >= 500){
+    // Light thresholds
+    // SAFE     : >=150 Lux
+    // WARNING  : 80-149 Lux
+    // CRITICAL : <80 Lux
+
+    if(value >= 150){
 
         card.classList.add("safe");
         badge.classList.add("green");
-        badge.innerHTML = "SAFE";
+        badge.textContent = "SAFE";
 
     }
-    else if(value >= 150){
+    else if(value >= 80){
 
         card.classList.add("warning");
         badge.classList.add("yellow");
-        badge.innerHTML = "WARNING";
+        badge.textContent = "WARNING";
 
     }
     else{
 
         card.classList.add("danger");
         badge.classList.add("red");
-        badge.innerHTML = "CRITICAL";
+        badge.textContent = "CRITICAL";
 
     }
 
