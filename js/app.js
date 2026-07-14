@@ -47,25 +47,25 @@ async function updateStatus() {
         // ================= SENSOR VALUES =================
 
         document.getElementById("pm1Value").textContent =
-            data.esp32 === "Connected" ? data.pm1 : "--";
+            data.esp32 === "Connected" ? Number(data.pm1).toFixed(1) : "--";
 
         document.getElementById("pm25Value").textContent =
-            data.esp32 === "Connected" ? data.pm25 : "--";
+            data.esp32 === "Connected" ? Number(data.pm25).toFixed(1) : "--";
 
         document.getElementById("pm10Value").textContent =
-            data.esp32 === "Connected" ? data.pm10 : "--";
+            data.esp32 === "Connected" ? Number(data.pm10).toFixed(1) : "--";
 
         document.getElementById("noiseValue").textContent =
-            data.esp32 === "Connected" ? data.noise : "--";
+            data.esp32 === "Connected" ? Number(data.noise).toFixed(1) : "--";
 
         document.getElementById("tempValue").textContent =
-            data.esp32 === "Connected" ? data.temperature : "--";
+            data.esp32 === "Connected" ? Number(data.temperature).toFixed(1) : "--";
 
         document.getElementById("humidityValue").textContent =
-            data.esp32 === "Connected" ? data.humidity : "--";
+            data.esp32 === "Connected" ? Number(data.humidity).toFixed(1) : "--";
 
         document.getElementById("lightValue").textContent =
-            data.esp32 === "Connected" ? data.light : "--";
+            data.esp32 === "Connected" ? Number(data.light).toFixed(1) : "--";
         // ================= ESP32 DISCONNECTED =================
 
         if (data.esp32 !== "Connected") {
