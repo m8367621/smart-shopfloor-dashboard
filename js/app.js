@@ -214,7 +214,7 @@ function updateSensorCards(data){
     updateCard("pm1Card", data.pm1, 50, 100);
     updateCard("pm25Card", data.pm25, 35, 75);
     updateCard("pm10Card", data.pm10, 80, 150);
-    updateCard("noiseCard", data.noise, 50, 60);
+    updateCard("noiseCard", data.noise, 60, 70);
     updateCard("tempCard", data.temperature, 35, 42);
     updateCard("humidityCard", data.humidity, 65, 80);
 
