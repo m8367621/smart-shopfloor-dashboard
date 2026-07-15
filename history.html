@@ -172,44 +172,6 @@ View, search, analyze and download previous sensor readings.
 
 <tbody>
 
-<tr>
-<td>11-07-2026</td>
-<td>10:15 AM</td>
-<td>12</td>
-<td>28</td>
-<td>45</td>
-<td>68 dB</td>
-<td>30°C</td>
-<td>58%</td>
-<td>420 Lux</td>
-<td style="color:lime;">🟢 Safe</td>
-</tr>
-
-<tr>
-<td>11-07-2026</td>
-<td>10:20 AM</td>
-<td>18</td>
-<td>40</td>
-<td>60</td>
-<td>82 dB</td>
-<td>31°C</td>
-<td>60%</td>
-<td>390 Lux</td>
-<td style="color:yellow;">🟡 Warning</td>
-</tr>
-
-<tr>
-<td>11-07-2026</td>
-<td>10:25 AM</td>
-<td>25</td>
-<td>58</td>
-<td>95</td>
-<td>92 dB</td>
-<td>34°C</td>
-<td>65%</td>
-<td>310 Lux</td>
-<td style="color:red;">🔴 Danger</td>
-</tr>
 
 </tbody>
 
@@ -436,37 +398,44 @@ document.querySelector(".primary-btn").onclick = function () {
 };
 async function loadHistory() {
 
-    const response = await fetch("https://smart-shopfloor-dashboard.onrender.com/api/history");
+    try {
 
-    const data = await response.json();
+        const response = await fetch("https://smart-shopfloor-dashboard.onrender.com/api/history");
 
-    const tbody = document.querySelector("#historyTable tbody");
+        const data = await response.json();
 
-    tbody.innerHTML = "";
+        const tbody = document.querySelector("#historyTable tbody");
 
-    data.forEach(item => {
+        tbody.innerHTML = "";
 
-        tbody.innerHTML += `
-        <tr>
-            <td>${item.date}</td>
-            <td>${item.time}</td>
-            <td>${item.pm1}</td>
-            <td>${item.pm25}</td>
-            <td>${item.pm10}</td>
-            <td>${item.noise}</td>
-            <td>${item.temperature}</td>
-            <td>${item.humidity}</td>
-            <td>${item.light}</td>
-            <td>${item.status}</td>
-        </tr>
-        `;
+        data.forEach(item => {
 
-    });
+            tbody.innerHTML += `
+            <tr>
+                <td>${item.date}</td>
+                <td>${item.time}</td>
+                <td>${Number(item.pm1).toFixed(1)}</td>
+                <td>${Number(item.pm25).toFixed(1)}</td>
+                <td>${Number(item.pm10).toFixed(1)}</td>
+                <td>${Number(item.noise).toFixed(1)}</td>
+                <td>${Number(item.temperature).toFixed(1)}</td>
+                <td>${Number(item.humidity).toFixed(1)}</td>
+                <td>${Number(item.light).toFixed(1)}</td>
+                <td>${item.status}</td>
+            </tr>
+            `;
 
-    calculateSummary();
+        });
+
+        calculateSummary();
+
+    } catch (err) {
+
+        console.log(err);
+
+    }
 
 }
-
 // =============================
 // Automatic Statistics
 // =============================
@@ -506,6 +475,7 @@ function calculateSummary() {
     document.getElementById("dangerCount").innerHTML = danger;
 }
 loadHistory();
+setInterval(loadHistory,1000);
 </script>
 
 </body>
