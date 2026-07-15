@@ -262,24 +262,30 @@ function getSensorStatus(value, warning, critical, reverse = false){
 
 }
 
-function addAlert(sensor,status){
+function addAlert(sensor, status){
 
-    const container=document.getElementById("alertsContainer");
+    const container = document.getElementById("alertsContainer");
 
-    const time=new Date().toLocaleTimeString();
+    const time = new Date().toLocaleTimeString("en-US",{
+        hour:"2-digit",
+        minute:"2-digit",
+        second:"2-digit",
+        hour12:true
+    });
 
-    let css="alert-safe";
+    let css = "alert-safe";
 
-    if(status==="WARNING") css="alert-warning";
-    if(status==="CRITICAL") css="alert-danger";
+    if(status === "WARNING"){
+        css = "alert-warning";
+    }
+    else if(status === "CRITICAL"){
+        css = "alert-danger";
+    }
 
-    container.innerHTML+=`
-
-    <div class="alert-item ${css}">
-        <span>${sensor} : ${status}</span>
-        <span class="alert-time">${time}</span>
-    </div>
-
+    container.innerHTML += `
+        <div class="alert-item ${css}">
+            <span><b>${sensor}</b> : ${status}</span>
+            <span class="alert-time">${time}</span>
+        </div>
     `;
-
 }
