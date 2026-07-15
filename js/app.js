@@ -259,7 +259,7 @@ function updateCard(cardId, value, warning, critical){
 
 function updateLightCard(cardId, value){
 
-    value = Numbe(value);
+    value = Number(value);
 
     const card = document.getElementById(cardId);
     const badge = card.querySelector(".status");
@@ -267,33 +267,35 @@ function updateLightCard(cardId, value){
     card.classList.remove("safe","warning","danger");
     badge.classList.remove("green","yellow","red");
 
-    // If ESP32 is disconnected (value = 0), keep it SAFE
-    if(value == 0){
-
+    // If sensor is disconnected or value is invalid
+    if (isNaN(value) || value <= 0) {
         card.classList.add("safe");
         badge.classList.add("green");
         badge.textContent = "SAFE";
-
+        return;
     }
-    else if(value < 80){
+
+    // Low light is dangerous
+    if (value < 80) {
 
         card.classList.add("danger");
         badge.classList.add("red");
         badge.textContent = "CRITICAL";
 
     }
-    else if(value < 150){
+    else if (value < 150) {
 
         card.classList.add("warning");
         badge.classList.add("yellow");
         badge.textContent = "WARNING";
 
     }
-    else{
+    else {
 
         card.classList.add("safe");
         badge.classList.add("green");
         badge.textContent = "SAFE";
 
     }
+
 }
