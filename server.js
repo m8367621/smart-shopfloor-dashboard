@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const fs = require("fs");
+const db = require("./js/database");
 
 const app = express();
 const PORT = 3000;
@@ -10,13 +10,8 @@ app.use(express.json());
 app.use(express.static(__dirname));
 
 let lastSeen = 0;
-let sensorHistory = [];
 
-if (fs.existsSync("history.json")) {
-    sensorHistory = JSON.parse(fs.readFileSync("history.json"));
-}
 let sensorData = {
-
     esp32: "Not Connected",
     wifi: "Not Connected",
     cloud: "Online",
@@ -31,7 +26,6 @@ let sensorData = {
     humidity: 0,
 
     light: 0
-
 };
 
 // ================= ESP32 SENDS DATA =================
@@ -41,73 +35,69 @@ app.post("/api/data", (req, res) => {
     lastSeen = Date.now();
 
     sensorData = {
-
         ...sensorData,
         ...req.body,
 
         esp32: "Connected",
         wifi: "Connected",
         cloud: "Online"
-
     };
 
-    // Save every sensor reading
-    sensorHistory.push({
+    let status = "Safe";
 
-        date: new Date().toLocaleDateString("en-GB", {
-            timeZone: "Asia/Kolkata"
-        }),
+    if (
+        sensorData.pm1 >= 100 ||
+        sensorData.pm25 >= 75 ||
+        sensorData.pm10 >= 150 ||
+        sensorData.noise >= 90 ||
+        sensorData.temperature >= 40 ||
+        sensorData.humidity >= 85 ||
+        sensorData.light < 80
+    ) {
 
-        time: new Date().toLocaleTimeString("en-IN", {
-            timeZone: "Asia/Kolkata",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
-            hour12: true
-        }),
+        status = "Danger";
 
-        pm1: sensorData.pm1,
-        pm25: sensorData.pm25,
-        pm10: sensorData.pm10,
+    } else if (
 
-        noise: sensorData.noise,
+        sensorData.pm1 >= 50 ||
+        sensorData.pm25 >= 35 ||
+        sensorData.pm10 >= 80 ||
+        sensorData.noise >= 75 ||
+        sensorData.temperature >= 35 ||
+        sensorData.humidity >= 70 ||
+        sensorData.light < 150
 
-        temperature: sensorData.temperature,
+    ) {
 
-        humidity: sensorData.humidity,
-
-        light: sensorData.light,
-
-        status:
-            sensorData.pm1 >= 100 ||
-            sensorData.pm25 >= 75 ||
-            sensorData.pm10 >= 150 ||
-            sensorData.noise >= 90 ||
-            sensorData.temperature >= 40 ||
-            sensorData.humidity >= 85 ||
-            sensorData.light < 80
-                ? " Danger"
-                : sensorData.pm1 >= 50 ||
-                  sensorData.pm25 >= 35 ||
-                  sensorData.pm10 >= 80 ||
-                  sensorData.noise >= 75 ||
-                  sensorData.temperature >= 35 ||
-                  sensorData.humidity >= 70 ||
-                  sensorData.light < 150
-                ? " Warning"
-                : "Safe"
-
-    });
-
-    // Keep only latest 1000 records
-    if (sensorHistory.length > 1000) {
-        sensorHistory.shift();
+        status = "Warning";
     }
 
-    // Save history to history.json
-    fs.writeFileSync(
-        "history.json",
-        JSON.stringify(sensorHistory, null, 2)
+    db.run(
+        `INSERT INTO sensor_history
+        (date,time,pm1,pm25,pm10,noise,temperature,humidity,light,status)
+        VALUES(?,?,?,?,?,?,?,?,?,?)`,
+        [
+            new Date().toLocaleDateString("en-GB", {
+                timeZone: "Asia/Kolkata"
+            }),
+
+            new Date().toLocaleTimeString("en-IN", {
+                timeZone: "Asia/Kolkata",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: true
+            }),
+
+            sensorData.pm1,
+            sensorData.pm25,
+            sensorData.pm10,
+            sensorData.noise,
+            sensorData.temperature,
+            sensorData.humidity,
+            sensorData.light,
+            status
+        ]
     );
 
     res.json({
@@ -116,7 +106,7 @@ app.post("/api/data", (req, res) => {
 
 });
 
-// ================= DASHBOARD READS DATA =================
+// ================= LIVE SENSOR DATA =================
 
 app.get("/api/data", (req, res) => {
 
@@ -128,22 +118,33 @@ app.get("/api/data", (req, res) => {
         sensorData.pm1 = 0;
         sensorData.pm25 = 0;
         sensorData.pm10 = 0;
-
         sensorData.noise = 0;
-
         sensorData.temperature = 0;
         sensorData.humidity = 0;
-
         sensorData.light = 0;
-
     }
 
     res.json(sensorData);
 
 });
+
+// ================= HISTORY =================
+
 app.get("/api/history", (req, res) => {
 
-    res.json(sensorHistory);
+    db.all(
+        "SELECT * FROM sensor_history ORDER BY id DESC",
+        [],
+        (err, rows) => {
+
+            if (err) {
+                return res.status(500).json(err);
+            }
+
+            res.json(rows);
+
+        }
+    );
 
 });
 
@@ -152,7 +153,6 @@ app.listen(PORT, () => {
     console.log("====================================");
     console.log(" Smart Shopfloor Server Started");
     console.log(" http://localhost:3000");
-    console.log(" Waiting for ESP32...");
     console.log("====================================");
 
 });
