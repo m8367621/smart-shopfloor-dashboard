@@ -11,107 +11,143 @@ function getTime() {
     });
 }
 
-function createChart(canvasId, label, color, maxY) {
+function getStatus(sensor, value){
 
-    return new Chart(document.getElementById(canvasId), {
+    value = Number(value);
 
-        type: "line",
+    switch(sensor){
 
-        data: {
-            labels: [],
-            datasets: [{
-                label: label,
-                data: [],
-                borderColor: color,
-                backgroundColor: color,
-                borderWidth: 2,
-                fill: false,
-                tension: 0.4,
-                pointRadius: 3
+        case "PM1.0":
+            if(value >= 100) return "CRITICAL";
+            if(value >= 50) return "WARNING";
+            return "SAFE";
+
+        case "PM2.5":
+            if(value >= 75) return "CRITICAL";
+            if(value >= 35) return "WARNING";
+            return "SAFE";
+
+        case "PM10":
+            if(value >= 150) return "CRITICAL";
+            if(value >= 80) return "WARNING";
+            return "SAFE";
+
+        case "Noise":
+            if(value >= 90) return "CRITICAL";
+            if(value >= 75) return "WARNING";
+            return "SAFE";
+
+        case "Temperature":
+            if(value >= 40) return "CRITICAL";
+            if(value >= 35) return "WARNING";
+            return "SAFE";
+
+        case "Humidity":
+            if(value >= 85) return "CRITICAL";
+            if(value >= 70) return "WARNING";
+            return "SAFE";
+
+        case "Light":
+            if(value < 80) return "CRITICAL";
+            if(value < 150) return "WARNING";
+            return "SAFE";
+
+        default:
+            return "SAFE";
+    }
+
+}
+
+function createChart(canvasId,label,color,maxY){
+
+    return new Chart(document.getElementById(canvasId),{
+
+        type:"line",
+
+        data:{
+            labels:[],
+            datasets:[{
+                label:label,
+                data:[],
+                borderColor:color,
+                backgroundColor:color,
+                borderWidth:2,
+                fill:false,
+                tension:0.4,
+                pointRadius:4,
+                pointHoverRadius:7
             }]
         },
 
-        options: {
+        options:{
 
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: false,
+            responsive:true,
+            maintainAspectRatio:false,
+            animation:false,
 
-            plugins: {
+            interaction:{
+                mode:"nearest",
+                intersect:true
+            },
 
-                legend: {
-                    display: false
+            onClick(event,elements,chart){
+
+                if(elements.length===0) return;
+
+                const index=elements[0].index;
+
+                const sensor=chart.data.datasets[0].label;
+
+                const value=chart.data.datasets[0].data[index];
+
+                const time=chart.data.labels[index];
+
+                const status=getStatus(sensor,value);
+
+                alert(
+`${sensor}
+
+Value : ${Number(value).toFixed(1)}
+
+Status : ${status}
+
+Time : ${time}
+
+Date : ${new Date().toLocaleDateString("en-GB")}`
+                );
+
+            },
+
+            plugins:{
+
+                legend:{
+                    display:false
                 },
 
-                tooltip: {
+                tooltip:{
 
-                    enabled: true,
+                    enabled:true,
 
-                    callbacks: {
+                    callbacks:{
 
-                        title: function(context){
+                        title:function(context){
 
-                            return "Time : " + context[0].label;
+                            return "Time : "+context[0].label;
 
                         },
 
-                        label: function(context){
+                        label:function(context){
 
-                            const value = Number(context.raw).toFixed(1);
+                            const sensor=context.dataset.label;
 
-                            const sensor = context.dataset.label;
+                            const value=Number(context.raw).toFixed(1);
 
-                            let warning = 0;
-                            let critical = 0;
+                            const status=getStatus(sensor,value);
 
-                            if(sensor === "PM1.0"){
-                                warning = 50;
-                                critical = 100;
-                            }
-                            else if(sensor === "PM2.5"){
-                                warning = 35;
-                                critical = 75;
-                            }
-                            else if(sensor === "PM10"){
-                                warning = 80;
-                                critical = 150;
-                            }
-                            else if(sensor === "Noise"){
-                                warning = 60;
-                                critical = 70;
-                            }
-                            else if(sensor === "Temperature"){
-                                warning = 35;
-                                critical = 40;
-                            }
-                            else if(sensor === "Humidity"){
-                                warning = 70;
-                                critical = 85;
-                            }
-
-                            let status = "SAFE";
-
-                            if(sensor === "Light"){
-
-                                if(value < 80)
-                                    status = "CRITICAL";
-                                else if(value < 150)
-                                    status = "WARNING";
-
-                            }
-                            else{
-
-                                if(value >= critical)
-                                    status = "CRITICAL";
-                                else if(value >= warning)
-                                    status = "WARNING";
-
-                            }
-
-                            return [
-                                "Value : " + value,
-                                "Status : " + status,
-                                "Date : " + new Date().toLocaleDateString("en-GB")
+                            return[
+                                "Value : "+value,
+                                "Status : "+status,
+                                "Date : "+new Date().toLocaleDateString("en-GB")
                             ];
 
                         }
@@ -122,26 +158,26 @@ function createChart(canvasId, label, color, maxY) {
 
             },
 
-            scales: {
+            scales:{
 
-                x: {
-                    ticks: {
-                        color: "white",
-                        maxTicksLimit: 6
+                x:{
+                    ticks:{
+                        color:"white",
+                        maxTicksLimit:6
                     },
-                    grid: {
-                        color: "#444"
+                    grid:{
+                        color:"#444"
                     }
                 },
 
-                y: {
-                    min: 0,
-                    max: maxY,
-                    ticks: {
-                        color: "white"
+                y:{
+                    min:0,
+                    max:maxY,
+                    ticks:{
+                        color:"white"
                     },
-                    grid: {
-                        color: "#444"
+                    grid:{
+                        color:"#444"
                     }
                 }
 
@@ -152,26 +188,61 @@ function createChart(canvasId, label, color, maxY) {
     });
 
 }
-
 // ================= CREATE ALL CHARTS =================
 
-const pm1Chart = createChart("pm1Chart","PM1.0","#00e676",200);
+const pm1Chart = createChart(
+    "pm1Chart",
+    "PM1.0",
+    "#00e676",
+    200
+);
 
-const pm25Chart = createChart("pm25Chart","PM2.5","#00bcd4",200);
+const pm25Chart = createChart(
+    "pm25Chart",
+    "PM2.5",
+    "#00bcd4",
+    200
+);
 
-const pm10Chart = createChart("pm10Chart","PM10","#ff9800",300);
+const pm10Chart = createChart(
+    "pm10Chart",
+    "PM10",
+    "#ff9800",
+    300
+);
 
-const noiseChart = createChart("noiseChart","Noise","#ff5252",120);
+const noiseChart = createChart(
+    "noiseChart",
+    "Noise",
+    "#ff5252",
+    120
+);
 
-const tempChart = createChart("tempChart","Temperature","#42a5f5",60);
+const tempChart = createChart(
+    "tempChart",
+    "Temperature",
+    "#42a5f5",
+    60
+);
 
-const humidityChart = createChart("humidityChart","Humidity","#ab47bc",100);
+const humidityChart = createChart(
+    "humidityChart",
+    "Humidity",
+    "#ab47bc",
+    100
+);
 
-const lightChart = createChart("lightChart","Light","#ffd600",60000);
-
+const lightChart = createChart(
+    "lightChart",
+    "Light",
+    "#ffd600",
+    60000
+);
 // ================= UPDATE CHART =================
 
 function updateChart(chart, value) {
+
+    value = Number(value).toFixed(1);
 
     if (chart.data.labels.length >= maxPoints) {
 
@@ -182,7 +253,7 @@ function updateChart(chart, value) {
 
     chart.data.labels.push(getTime());
 
-    chart.data.datasets[0].data.push(value);
+    chart.data.datasets[0].data.push(Number(value));
 
     chart.update();
 
