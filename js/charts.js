@@ -1,7 +1,7 @@
 // ================= LIVE CHARTS =================
 
 const maxPoints = 20;
-
+let pausecharts = false
 function getTime() {
     return new Date().toLocaleTimeString("en-US", {
         hour: "2-digit",
@@ -88,6 +88,9 @@ function createChart(canvasId,label,color,maxY){
             interaction:{
                 mode:"nearest",
                 intersect:true
+            },
+            onHover(event,activeElements){
+                pauseCharts = activeElements.length > 0;
             },
 
             onClick(event,elements,chart){
@@ -242,17 +245,16 @@ const lightChart = createChart(
 
 function updateChart(chart, value) {
 
+    if (pauseCharts) return;
+
     value = Number(value).toFixed(1);
 
     if (chart.data.labels.length >= maxPoints) {
-
         chart.data.labels.shift();
         chart.data.datasets[0].data.shift();
-
     }
 
     chart.data.labels.push(getTime());
-
     chart.data.datasets[0].data.push(Number(value));
 
     chart.update();
