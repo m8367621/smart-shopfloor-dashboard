@@ -679,10 +679,10 @@ table{
 
 .history-filter{
     display:grid;
-    grid-template-columns:180px 180px 1fr auto auto auto;
+    grid-template-columns: 170px 170px 170px 1fr auto auto auto;
     gap:15px;
     align-items:end;
-    margin-bottom:30px;
+    margin:25px 0;
 }
 
 .filter-box{
@@ -691,16 +691,18 @@ table{
 }
 
 .filter-box label{
-    color:#fff;
     margin-bottom:8px;
     font-weight:600;
+    color:#fff;
 }
 
-.filter-box input{
-    padding:12px;
-    border:none;
-    border-radius:10px;
-    background:#1e293b;
+.filter-box input,
+.filter-box select{
+    height:45px;
+    padding:0 12px;
+    border-radius:8px;
+    border:1px solid #3b4d63;
+    background:#1b263b;
     color:#fff;
     font-size:15px;
 }
@@ -712,25 +714,28 @@ table{
 .primary-btn,
 .success-btn,
 .excel-btn{
+    height:45px;
+    padding:0 20px;
     border:none;
-    border-radius:10px;
-    padding:14px 22px;
-    color:white;
-    font-size:15px;
+    border-radius:8px;
     cursor:pointer;
+    font-weight:600;
     white-space:nowrap;
 }
 
 .primary-btn{
-    background:#2563eb;
+    background:#1e88e5;
+    color:white;
 }
 
 .success-btn{
-    background:#16a34a;
+    background:#43a047;
+    color:white;
 }
 
 .excel-btn{
-    background:#059669;
+    background:#2e7d32;
+    color:white;
 }
 
 .primary-btn:hover,
