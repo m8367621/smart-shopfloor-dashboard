@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(express.static(__dirname));
 
 let lastSeen = 0;
-
+let sensorHistory =[];
 let sensorData = {
 
     esp32: "Not Connected",
@@ -38,16 +38,58 @@ app.post("/api/data", (req, res) => {
     sensorData = {
 
         ...sensorData,
-
         ...req.body,
 
         esp32: "Connected",
-
         wifi: "Connected",
-
         cloud: "Online"
 
     };
+
+    // Save every sensor reading
+    sensorHistory.push({
+
+        date: new Date().toLocaleDateString("en-GB"),
+
+        time: new Date().toLocaleTimeString("en-US"),
+
+        pm1: sensorData.pm1,
+        pm25: sensorData.pm25,
+        pm10: sensorData.pm10,
+
+        noise: sensorData.noise,
+
+        temperature: sensorData.temperature,
+
+        humidity: sensorData.humidity,
+
+        light: sensorData.light,
+
+        status:
+            sensorData.pm1 >= 100 ||
+            sensorData.pm25 >= 75 ||
+            sensorData.pm10 >= 150 ||
+            sensorData.noise >= 90 ||
+            sensorData.temperature >= 40 ||
+            sensorData.humidity >= 85 ||
+            sensorData.light < 80
+                ? "🔴 Danger"
+                : sensorData.pm1 >= 50 ||
+                  sensorData.pm25 >= 35 ||
+                  sensorData.pm10 >= 80 ||
+                  sensorData.noise >= 75 ||
+                  sensorData.temperature >= 35 ||
+                  sensorData.humidity >= 70 ||
+                  sensorData.light < 150
+                ? "🟡 Warning"
+                : "🟢 Safe"
+
+    });
+
+    // Keep only latest 1000 records
+    if (sensorHistory.length > 1000) {
+        sensorHistory.shift();
+    }
 
     res.json({
         success: true
@@ -78,6 +120,11 @@ app.get("/api/data", (req, res) => {
     }
 
     res.json(sensorData);
+
+});
+app.get("/api/history", (req, res) => {
+
+    res.json(sensorHistory);
 
 });
 
