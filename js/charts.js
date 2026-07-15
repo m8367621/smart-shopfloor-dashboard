@@ -38,9 +38,88 @@ function createChart(canvasId, label, color, maxY) {
             animation: false,
 
             plugins: {
+
                 legend: {
                     display: false
+                },
+
+                tooltip: {
+
+                    enabled: true,
+
+                    callbacks: {
+
+                        title: function(context){
+
+                            return "Time : " + context[0].label;
+
+                        },
+
+                        label: function(context){
+
+                            const value = Number(context.raw).toFixed(1);
+
+                            const sensor = context.dataset.label;
+
+                            let warning = 0;
+                            let critical = 0;
+
+                            if(sensor === "PM1.0"){
+                                warning = 50;
+                                critical = 100;
+                            }
+                            else if(sensor === "PM2.5"){
+                                warning = 35;
+                                critical = 75;
+                            }
+                            else if(sensor === "PM10"){
+                                warning = 80;
+                                critical = 150;
+                            }
+                            else if(sensor === "Noise"){
+                                warning = 60;
+                                critical = 70;
+                            }
+                            else if(sensor === "Temperature"){
+                                warning = 35;
+                                critical = 40;
+                            }
+                            else if(sensor === "Humidity"){
+                                warning = 70;
+                                critical = 85;
+                            }
+
+                            let status = "SAFE";
+
+                            if(sensor === "Light"){
+
+                                if(value < 80)
+                                    status = "CRITICAL";
+                                else if(value < 150)
+                                    status = "WARNING";
+
+                            }
+                            else{
+
+                                if(value >= critical)
+                                    status = "CRITICAL";
+                                else if(value >= warning)
+                                    status = "WARNING";
+
+                            }
+
+                            return [
+                                "Value : " + value,
+                                "Status : " + status,
+                                "Date : " + new Date().toLocaleDateString("en-GB")
+                            ];
+
+                        }
+
+                    }
+
                 }
+
             },
 
             scales: {
