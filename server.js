@@ -54,9 +54,17 @@ app.post("/api/data", (req, res) => {
     // Save every sensor reading
     sensorHistory.push({
 
-        date: new Date().toLocaleDateString("en-GB"),
+        date: new Date().toLocaleDateString("en-GB", {
+            timeZone: "Asia/Kolkata"
+        }),
 
-        time: new Date().toLocaleTimeString("en-US"),
+        time: new Date().toLocaleTimeString("en-IN", {
+            timeZone: "Asia/Kolkata",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: true
+        }),
 
         pm1: sensorData.pm1,
         pm25: sensorData.pm25,
