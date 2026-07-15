@@ -268,7 +268,7 @@ function updateLightCard(cardId, value){
     badge.classList.remove("green","yellow","red");
 
     // If ESP32 is disconnected (value = 0), keep it SAFE
-    if(value == 0){
+    if(value > 150){
 
         card.classList.add("safe");
         badge.classList.add("green");
