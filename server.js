@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const fs = require("fs");
 
 const app = express();
 const PORT = 3000;
@@ -9,7 +10,11 @@ app.use(express.json());
 app.use(express.static(__dirname));
 
 let lastSeen = 0;
-let sensorHistory =[];
+let sensorHistory = [];
+
+if (fs.existsSync("history.json")) {
+    sensorHistory = JSON.parse(fs.readFileSync("history.json"));
+}
 let sensorData = {
 
     esp32: "Not Connected",
@@ -90,6 +95,12 @@ app.post("/api/data", (req, res) => {
     if (sensorHistory.length > 1000) {
         sensorHistory.shift();
     }
+
+    // Save history to history.json
+    fs.writeFileSync(
+        "history.json",
+        JSON.stringify(sensorHistory, null, 2)
+    );
 
     res.json({
         success: true
