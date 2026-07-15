@@ -15,6 +15,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 </head>
 
 <body>
@@ -252,52 +254,36 @@ tr[i].style.display="none";
 // =============================
 document.querySelector(".success-btn").onclick = function () {
 
-const { jsPDF } = window.jspdf;
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
 
-const doc = new jsPDF();
+    doc.setFontSize(18);
+    doc.text("Smart Shopfloor Environment Monitoring System", 15, 20);
 
-doc.setFontSize(18);
-doc.text("Smart Shopfloor Environment Monitoring System", 20, 20);
+    doc.setFontSize(13);
+    doc.text("Sensor History Report", 15, 32);
 
-doc.setFontSize(14);
-doc.text("Sensor History Report", 20, 35);
+    doc.setFontSize(10);
+    doc.text("Generated: " + new Date().toLocaleString(), 15, 42);
 
-doc.setFontSize(11);
-doc.text("Generated on: " + new Date().toLocaleString(), 20, 45);
+    doc.text("Total Records : " + document.getElementById("totalRecords").innerText, 15, 55);
+    doc.text("Safe : " + document.getElementById("safeCount").innerText, 15, 62);
+    doc.text("Warning : " + document.getElementById("warningCount").innerText, 15, 69);
+    doc.text("Danger : " + document.getElementById("dangerCount").innerText, 15, 76);
 
-doc.text("Total Records : " + document.getElementById("totalRecords").innerText, 20, 60);
-doc.text("Safe : " + document.getElementById("safeCount").innerText, 20, 70);
-doc.text("Warning : " + document.getElementById("warningCount").innerText, 20, 80);
-doc.text("Danger : " + document.getElementById("dangerCount").innerText, 20, 90);
-
-let y = 105;
-
-let rows = document.querySelectorAll("#historyTable tbody tr");
-
-rows.forEach(row => {
-
-    if (row.style.display === "none") return;
-
-    let cells = row.querySelectorAll("td");
-
-    let line = "";
-
-    cells.forEach(cell => {
-        line += cell.innerText + " | ";
+    doc.autoTable({
+        html: "#historyTable",
+        startY: 85,
+        theme: "grid",
+        styles: {
+            fontSize: 8
+        },
+        headStyles: {
+            fillColor: [41, 128, 185]
+        }
     });
 
-    doc.text(line, 20, y);
-
-    y += 8;
-
-    if (y > 280) {
-        doc.addPage();
-        y = 20;
-    }
-
-});
-
-doc.save("Shopfloor_Report.pdf");
+    doc.save("Smart_Shopfloor_Report.pdf");
 }
 
 // =============================
