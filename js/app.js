@@ -20,11 +20,15 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
-
-// ================= TOWER LAMP =================
-
-;
-
+let previousStatus = {
+    pm1: "",
+    pm25: "",
+    pm10: "",
+    noise: "",
+    temperature: "",
+    humidity: "",
+    light: ""
+};
 
 // ================= UPDATE DASHBOARD =================
 
@@ -114,13 +118,19 @@ async function updateStatus() {
 
         } else {
 
-            addAlert("PM1.0", getSensorStatus(data.pm1,50,100));
-            addAlert("PM2.5", getSensorStatus(data.pm25,35,75));
-            addAlert("PM10", getSensorStatus(data.pm10,80,150));
-            addAlert("Noise", getSensorStatus(data.noise,75,90));
-            addAlert("Temperature", getSensorStatus(data.temperature,35,40));
-            addAlert("Humidity", getSensorStatus(data.humidity,70,85));
-            addAlert("Ambient Light", getSensorStatus(data.light,150,80,true));
+           checkAlert("pm1","PM1.0",getSensorStatus(data.pm1,50,100));
+
+            checkAlert("pm25","PM2.5",getSensorStatus(data.pm25,35,75));
+
+            checkAlert("pm10","PM10",getSensorStatus(data.pm10,80,150));
+
+            checkAlert("noise","Noise",getSensorStatus(data.noise,75,90));
+
+            checkAlert("temperature","Temperature",getSensorStatus(data.temperature,35,40));
+
+            checkAlert("humidity","Humidity",getSensorStatus(data.humidity,70,85));
+
+            checkAlert("light","Ambient Light",getSensorStatus(data.light,150,80,true));
 
         }
 
@@ -288,4 +298,15 @@ function addAlert(sensor, status){
             <span class="alert-time">${time}</span>
         </div>
     `;
+}
+function checkAlert(sensorKey, sensorName, status){
+
+    if(previousStatus[sensorKey] !== status){
+
+        previousStatus[sensorKey] = status;
+
+        addAlert(sensorName, status);
+
+    }
+
 }
