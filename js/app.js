@@ -259,7 +259,7 @@ function updateCard(cardId, value, warning, critical){
 
 function updateLightCard(cardId, value){
 
-    value = Number(value);
+    value = Numbe(value);
 
     const card = document.getElementById(cardId);
     const badge = card.querySelector(".status");
@@ -267,19 +267,22 @@ function updateLightCard(cardId, value){
     card.classList.remove("safe","warning","danger");
     badge.classList.remove("green","yellow","red");
 
-    // Light thresholds
-    // SAFE     : >=150 Lux
-    // WARNING  : 80-149 Lux
-    // CRITICAL : <80 Lux
-
-    if(value >= 150){
+    // If ESP32 is disconnected (value = 0), keep it SAFE
+    if(value == 0){
 
         card.classList.add("safe");
         badge.classList.add("green");
         badge.textContent = "SAFE";
 
     }
-    else if(value >= 80){
+    else if(value < 80){
+
+        card.classList.add("danger");
+        badge.classList.add("red");
+        badge.textContent = "CRITICAL";
+
+    }
+    else if(value < 150){
 
         card.classList.add("warning");
         badge.classList.add("yellow");
@@ -288,10 +291,9 @@ function updateLightCard(cardId, value){
     }
     else{
 
-        card.classList.add("danger");
-        badge.classList.add("red");
-        badge.textContent = "CRITICAL";
+        card.classList.add("safe");
+        badge.classList.add("green");
+        badge.textContent = "SAFE";
 
     }
-
 }
