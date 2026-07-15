@@ -86,7 +86,7 @@ app.post("/api/data", (req, res) => {
             sensorData.temperature >= 40 ||
             sensorData.humidity >= 85 ||
             sensorData.light < 80
-                ? " danger"
+                ? " Danger"
                 : sensorData.pm1 >= 50 ||
                   sensorData.pm25 >= 35 ||
                   sensorData.pm10 >= 80 ||

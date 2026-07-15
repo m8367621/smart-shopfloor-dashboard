@@ -457,16 +457,17 @@ function calculateSummary() {
 
         total++;
 
-        let status = rows[i].cells[9].innerText;
+        let status = rows[i].cells[9].innerText.toLowerCase();
 
-        if (status.includes("Safe"))
+        if (status.includes("safe")) {
             safe++;
-
-        else if (status.includes("Warning"))
+        }
+        else if (status.includes("warning")) {
             warning++;
-
-        else if (status.includes("Danger"))
+        }
+        else if (status.includes("danger") || status.includes("critical")) {
             danger++;
+        }
     }
 
     document.getElementById("totalRecords").innerHTML = total;
