@@ -23,9 +23,7 @@ updateClock();
 
 // ================= TOWER LAMP =================
 
-const greenLamp = document.querySelector(".lamp.green");
-const yellowLamp = document.querySelector(".lamp.yellow");
-const redLamp = document.querySelector(".lamp.red");
+;
 
 
 // ================= UPDATE DASHBOARD =================
@@ -110,90 +108,6 @@ async function updateStatus() {
         updateChart(lightChart, data.light);
         // ================= OVERALL SAFETY =================
 
-        let level = "SAFE";
-
-        if (
-            data.pm1 >= 100 ||
-            data.pm25 >= 75 ||
-            data.pm10 >= 150 ||
-            data.noise >= 90 ||
-            data.temperature >= 40
-        ) {
-
-            level = "CRITICAL";
-
-        }
-        else if (
-
-            data.pm1 >= 50 ||
-            data.pm25 >= 35 ||
-            data.pm10 >= 80 ||
-            data.noise >= 75 ||
-            data.temperature >= 35 ||
-            data.humidity >= 70 ||
-            data.light <= 150
-
-        ) {
-
-            level = "WARNING";
-
-        }
-
-        const overall = document.getElementById("overallStatus");
-        const overallText = document.getElementById("overallText");
-        const overallMessage = document.getElementById("overallMessage");
-
-        overall.className = "overall-status";
-
-        greenLamp.classList.remove("active");
-        yellowLamp.classList.remove("active");
-        redLamp.classList.remove("active");
-
-        if (level === "SAFE") {
-
-            overall.classList.add("safe");
-
-            overallText.innerHTML = "SAFE";
-
-            overallMessage.innerHTML =
-                "All environmental parameters are within safe limits.";
-
-            greenLamp.classList.add("active");
-
-            document.getElementById("towerText").innerHTML =
-                "GREEN - Normal Condition";
-
-        }
-        else if (level === "WARNING") {
-
-            overall.classList.add("warning");
-
-            overallText.innerHTML = "WARNING";
-
-            overallMessage.innerHTML =
-                "One or more sensors crossed the warning threshold.";
-
-            yellowLamp.classList.add("active");
-
-            document.getElementById("towerText").innerHTML =
-                "YELLOW - Warning Condition";
-
-        }
-        else {
-
-            overall.classList.add("danger");
-
-            overallText.innerHTML = "CRITICAL";
-
-            overallMessage.innerHTML =
-                "Critical environmental condition detected.";
-
-            redLamp.classList.add("active");
-
-            document.getElementById("towerText").innerHTML =
-                "RED - Critical Condition";
-
-        }
 
     }
     catch(err){
