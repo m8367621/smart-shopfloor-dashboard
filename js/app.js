@@ -97,6 +97,33 @@ async function updateStatus() {
 
         updateSensorCards(data);
 
+        // ================= RECENT SENSOR ALERTS =================
+
+        const container = document.getElementById("alertsContainer");
+
+        container.innerHTML = "";
+
+        if (data.esp32 !== "Connected") {
+
+            container.innerHTML = `
+                <div class="no-data">
+                    ⚠ No data found.<br>
+                    Please check whether the ESP32 is connected.
+                </div>
+            `;
+
+        } else {
+
+            addAlert("PM1.0", getSensorStatus(data.pm1,50,100));
+            addAlert("PM2.5", getSensorStatus(data.pm25,35,75));
+            addAlert("PM10", getSensorStatus(data.pm10,80,150));
+            addAlert("Noise", getSensorStatus(data.noise,75,90));
+            addAlert("Temperature", getSensorStatus(data.temperature,35,40));
+            addAlert("Humidity", getSensorStatus(data.humidity,70,85));
+            addAlert("Ambient Light", getSensorStatus(data.light,150,80,true));
+
+        }
+
         // ================= LIVE CHARTS =================
 
         updateChart(pm1Chart, data.pm1);
@@ -211,5 +238,48 @@ function updateLightCard(cardId, value){
         badge.textContent = "SAFE";
 
     }
+
+}
+function getSensorStatus(value, warning, critical, reverse = false){
+
+    value = Number(value);
+
+    if(isNaN(value)) return "SAFE";
+
+    if(reverse){
+
+        if(value <= critical) return "CRITICAL";
+        if(value <= warning) return "WARNING";
+        return "SAFE";
+
+    }else{
+
+        if(value >= critical) return "CRITICAL";
+        if(value >= warning) return "WARNING";
+        return "SAFE";
+
+    }
+
+}
+
+function addAlert(sensor,status){
+
+    const container=document.getElementById("alertsContainer");
+
+    const time=new Date().toLocaleTimeString();
+
+    let css="alert-safe";
+
+    if(status==="WARNING") css="alert-warning";
+    if(status==="CRITICAL") css="alert-danger";
+
+    container.innerHTML+=`
+
+    <div class="alert-item ${css}">
+        <span>${sensor} : ${status}</span>
+        <span class="alert-time">${time}</span>
+    </div>
+
+    `;
 
 }

@@ -144,4 +144,49 @@ color:white;
 
 color:#00bfff;
 
+}.alerts-section{
+    background:#111827;
+    padding:20px;
+    border-radius:15px;
+    margin-top:20px;
 }
+
+.alert-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px 18px;
+    margin-bottom:12px;
+    border-radius:10px;
+    font-weight:600;
+    color:white;
+}
+
+.alert-safe{
+    background:#174d28;
+    border-left:6px solid #22c55e;
+}
+
+.alert-warning{
+    background:#5d4715;
+    border-left:6px solid #facc15;
+}
+
+.alert-danger{
+    background:#5b1d22;
+    border-left:6px solid #ef4444;
+}
+
+.alert-time{
+    color:#d1d5db;
+    font-size:14px;
+}
+
+.no-data{
+    text-align:center;
+    padding:30px;
+    color:#ff6b6b;
+    font-size:18px;
+    font-weight:bold;
+}
+
