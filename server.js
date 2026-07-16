@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-const db = require("./js/database");
 
 const app = express();
 const PORT = 3000;
@@ -71,34 +70,6 @@ app.post("/api/data", (req, res) => {
         status = "Warning";
     }
     //every 30 seconds//
-    
-    db.run(
-        `INSERT INTO sensor_history
-        (date,time,pm1,pm25,pm10,noise,temperature,humidity,light,status)
-        VALUES(?,?,?,?,?,?,?,?,?,?)`,
-        [
-            new Date().toLocaleDateString("en-GB", {
-                timeZone: "Asia/Kolkata"
-            }),
-
-            new Date().toLocaleTimeString("en-IN", {
-                timeZone: "Asia/Kolkata",
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit",
-                hour12: true
-            }),
-
-            sensorData.pm1,
-            sensorData.pm25,
-            sensorData.pm10,
-            sensorData.noise,
-            sensorData.temperature,
-            sensorData.humidity,
-            sensorData.light,
-            status
-        ]
-    );
 
     res.json({
         success: true
@@ -130,23 +101,7 @@ app.get("/api/data", (req, res) => {
 
 // ================= HISTORY =================
 
-app.get("/api/history", (req, res) => {
 
-    db.all(
-        "SELECT * FROM sensor_history ORDER BY id DESC",
-        [],
-        (err, rows) => {
-
-            if (err) {
-                return res.status(500).json(err);
-            }
-
-            res.json(rows);
-
-        }
-    );
-
-});
 
 app.listen(PORT, () => {
 
