@@ -9,8 +9,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(__dirname));
 
+let lastHistorySave = 0;
 let lastSeen = 0;
-
 let sensorData = {
     esp32: "Not Connected",
     wifi: "Not Connected",
@@ -71,7 +71,10 @@ app.post("/api/data", (req, res) => {
 
         status = "Warning";
     }
-
+    //every 30 seconds//
+    if (DataTransfer.now() -lastHistorySave >= 30000){
+        lastHistorySave = Date.now();
+    }
     db.run(
         `INSERT INTO sensor_history
         (date,time,pm1,pm25,pm10,noise,temperature,humidity,light,status)
