@@ -118,20 +118,29 @@ async function updateStatus() {
 
         } else {
 
-           checkAlert("pm1","PM1.0",getSensorStatus(data.pm1,50,100));
+            const saved = JSON.parse(localStorage.getItem("shopfloorSettings")) || [
+            50,100,
+            60,120,
+            100,200,
+            80,100,
+            35,45,
+            80,90,
+            500,1000
+            ];
 
-            checkAlert("pm25","PM2.5",getSensorStatus(data.pm25,35,75));
+            checkAlert("pm1","PM1.0",getSensorStatus(data.pm1,Number(saved[0]),Number(saved[1])));
 
-            checkAlert("pm10","PM10",getSensorStatus(data.pm10,80,150));
+            checkAlert("pm25","PM2.5",getSensorStatus(data.pm25,Number(saved[2]),Number(saved[3])));
 
-            checkAlert("noise","Noise",getSensorStatus(data.noise,75,90));
+            checkAlert("pm10","PM10",getSensorStatus(data.pm10,Number(saved[4]),Number(saved[5])));
 
-            checkAlert("temperature","Temperature",getSensorStatus(data.temperature,35,40));
+            checkAlert("noise","Noise",getSensorStatus(data.noise,Number(saved[6]),Number(saved[7])));
 
-            checkAlert("humidity","Humidity",getSensorStatus(data.humidity,70,85));
+            checkAlert("temperature","Temperature",getSensorStatus(data.temperature,Number(saved[8]),Number(saved[9])));
 
-            checkAlert("light","Ambient Light",getSensorStatus(data.light,150,80,true));
+            checkAlert("humidity","Humidity",getSensorStatus(data.humidity,Number(saved[10]),Number(saved[11])));
 
+            checkAlert("light","Ambient Light",getSensorStatus(data.light,Number(saved[12]),Number(saved[13]),true));
         }
 
         // ================= LIVE CHARTS =================
