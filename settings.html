@@ -297,20 +297,36 @@ const inputs = document.querySelectorAll("input[type='number']");
 
 document.querySelector(".save").onclick = function(){
 
-    let settings = [];
+    const settings = {
 
-    inputs.forEach(input=>{
-        settings.push(input.value);
-    });
+        pm1Warning: Number(inputs[0].value),
+        pm1Danger: Number(inputs[1].value),
 
+        pm25Warning: Number(inputs[2].value),
+        pm25Danger: Number(inputs[3].value),
 
-    localStorage.setItem("shopfloorSettings",JSON.stringify(settings));
+        pm10Warning: Number(inputs[4].value),
+        pm10Danger: Number(inputs[5].value),
 
+        noiseWarning: Number(inputs[6].value),
+        noiseDanger: Number(inputs[7].value),
+
+        tempWarning: Number(inputs[8].value),
+        tempDanger: Number(inputs[9].value),
+
+        humidityWarning: Number(inputs[10].value),
+        humidityDanger: Number(inputs[11].value),
+
+        lightWarning: Number(inputs[12].value),
+        lightDanger: Number(inputs[13].value)
+
+    };
+
+    localStorage.setItem("shopfloorSettings", JSON.stringify(settings));
 
     alert("Settings Saved Successfully");
 
 };
-
 
 
 // Reset settings
@@ -331,24 +347,36 @@ document.querySelector(".reset").onclick = function(){
 
 window.onload = function(){
 
-    let saved = localStorage.getItem("shopfloorSettings");
-
+    const saved = localStorage.getItem("shopfloorSettings");
 
     if(saved){
 
-        let settings = JSON.parse(saved);
+        const settings = JSON.parse(saved);
 
+        inputs[0].value = settings.pm1Warning;
+        inputs[1].value = settings.pm1Danger;
 
-        inputs.forEach((input,index)=>{
+        inputs[2].value = settings.pm25Warning;
+        inputs[3].value = settings.pm25Danger;
 
-            input.value = settings[index];
+        inputs[4].value = settings.pm10Warning;
+        inputs[5].value = settings.pm10Danger;
 
-        });
+        inputs[6].value = settings.noiseWarning;
+        inputs[7].value = settings.noiseDanger;
+
+        inputs[8].value = settings.tempWarning;
+        inputs[9].value = settings.tempDanger;
+
+        inputs[10].value = settings.humidityWarning;
+        inputs[11].value = settings.humidityDanger;
+
+        inputs[12].value = settings.lightWarning;
+        inputs[13].value = settings.lightDanger;
 
     }
 
 };
-
 
 </script>
 
