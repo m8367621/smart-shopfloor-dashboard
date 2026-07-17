@@ -1,13 +1,13 @@
 {
   "name": "smart-shopfloor-dashboard",
   "version": "1.0.0",
-  "main": "server.js",
+  "description": "Smart Shopfloor Environment Monitoring Dashboard",
+  "main": "js/server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node js/server.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^5.2.1",
-    "firebase-admin": "^14.1.0"
+    "express": "^5.1.0"
   }
 }

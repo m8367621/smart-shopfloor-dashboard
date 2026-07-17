@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-const db = require("./firebase");
 
 const app = express();
 const PORT = 3000;
@@ -72,43 +71,6 @@ app.post("/api/data", (req, res) => {
     }
     // Save every sensor reading to Firebase
 
-    db.collection("sensor_history").add({
-
-        date: new Date().toLocaleDateString("en-GB", {
-            timeZone: "Asia/Kolkata"
-        }),
-
-        time: new Date().toLocaleTimeString("en-IN", {
-            timeZone: "Asia/Kolkata",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
-            hour12: true
-        }),
-
-        pm1: sensorData.pm1,
-        pm25: sensorData.pm25,
-        pm10: sensorData.pm10,
-
-        noise: sensorData.noise,
-
-        temperature: sensorData.temperature,
-
-        humidity: sensorData.humidity,
-
-        light: sensorData.light,
-
-        status: status,
-
-        timestamp: Date.now()
-
-    })
-    .then(() => {
-        console.log("Sensor data saved to Firebase");
-    })
-    .catch((err) => {
-        console.log(err);
-    });
 
     res.json({
         success: true
