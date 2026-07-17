@@ -162,16 +162,61 @@ updateStatus();
 
 function updateSensorCards(data){
 
-    updateCard("pm1Card", data.pm1, 50, 100);
-    updateCard("pm25Card", data.pm25, 35, 75);
-    updateCard("pm10Card", data.pm10, 80, 150);
-    updateCard("noiseCard", data.noise, 60, 70);
-    updateCard("tempCard", data.temperature, 35, 42);
-    updateCard("humidityCard", data.humidity, 65, 80);
+    const settings = JSON.parse(localStorage.getItem("shopfloorSettings")) || {
 
-    // Light sensor (low value is bad)
-    updateLightCard("lightCard", data.light);
+        pm1Warning:50,
+        pm1Danger:100,
 
+        pm25Warning:60,
+        pm25Danger:120,
+
+        pm10Warning:100,
+        pm10Danger:200,
+
+        noiseWarning:80,
+        noiseDanger:100,
+
+        tempWarning:35,
+        tempDanger:45,
+
+        humidityWarning:80,
+        humidityDanger:90,
+
+        lightWarning:500,
+        lightDanger:1000
+
+    };
+
+    updateCard("pm1Card", data.pm1,
+        Number(settings.pm1Warning),
+        Number(settings.pm1Danger));
+
+    updateCard("pm25Card", data.pm25,
+        Number(settings.pm25Warning),
+        Number(settings.pm25Danger));
+
+    updateCard("pm10Card", data.pm10,
+        Number(settings.pm10Warning),
+        Number(settings.pm10Danger));
+
+    updateCard("noiseCard", data.noise,
+        Number(settings.noiseWarning),
+        Number(settings.noiseDanger));
+
+    updateCard("tempCard", data.temperature,
+        Number(settings.tempWarning),
+        Number(settings.tempDanger));
+
+    updateCard("humidityCard", data.humidity,
+        Number(settings.humidityWarning),
+        Number(settings.humidityDanger));
+
+    updateLightCard(
+        "lightCard",
+        data.light,
+        Number(settings.lightWarning),
+        Number(settings.lightDanger)
+    );
 }
 
 function updateCard(cardId, value, warning, critical){
@@ -208,7 +253,7 @@ function updateCard(cardId, value, warning, critical){
 
 }
 
-function updateLightCard(cardId, value){
+function updateLightCard(cardId, value, warning, danger){
 
     value = Number(value);
 
@@ -226,15 +271,14 @@ function updateLightCard(cardId, value){
         return;
     }
 
-    // Low light is dangerous
-    if (value < 80) {
+    if (value < danger) {
 
-        card.classList.add("danger");
-        badge.classList.add("red");
-        badge.textContent = "CRITICAL";
+    card.classList.add("danger");
+    badge.classList.add("red");
+    badge.textContent = "CRITICAL";
 
     }
-    else if (value < 150) {
+    else if (value < warning) {
 
         card.classList.add("warning");
         badge.classList.add("yellow");
