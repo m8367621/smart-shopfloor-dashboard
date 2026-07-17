@@ -71,7 +71,6 @@ app.post("/api/data", (req, res) => {
     }
     // Save every sensor reading to Firebase
 
-
     res.json({
         success: true
     });
