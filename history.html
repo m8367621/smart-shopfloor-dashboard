@@ -399,21 +399,34 @@ document.querySelector(".primary-btn").onclick = function () {
 function getSettings(){
 
     let s = JSON.parse(localStorage.getItem("shopfloorSettings"));
+        if(!s){
 
-    if(!s){
+        s={
 
-        s = [
-            50,100,
-            60,120,
-            100,200,
-            80,100,
-            35,45,
-            80,90,
-            500,1000
-        ];
+        pm1Warning:50,
+        pm1Danger:100,
 
-    }
+        pm25Warning:60,
+        pm25Danger:120,
 
+        pm10Warning:100,
+        pm10Danger:200,
+
+        noiseWarning:80,
+        noiseDanger:100,
+
+        tempWarning:35,
+        tempDanger:45,
+
+        humidityWarning:80,
+        humidityDanger:90,
+
+        lightWarning:150,
+        lightDanger:80
+
+        };
+
+        }
     return s;
 
 }
@@ -458,7 +471,7 @@ async function loadHistory() {
         tbody.innerHTML = "";
 
         const t = getSettings();
-        
+
         data.forEach(item => {
 
         tbody.innerHTML += `
@@ -466,20 +479,19 @@ async function loadHistory() {
             <td>${item.date}</td>
             <td>${item.time}</td>
 
-            <td>${getIcon(item.pm1, t[0], t[1])} ${Number(item.pm1).toFixed(1)}</td>
+            <td>${getIcon(item.pm1, t.pm1Warning, t.pm1Danger)} ${Number(item.pm1).toFixed(1)}</td>
 
-            <td>${getIcon(item.pm25, t[2], t[3])} ${Number(item.pm25).toFixed(1)}</td>
+            <td>${getIcon(item.pm25, t.pm25Warning, t.pm25Danger)} ${Number(item.pm25).toFixed(1)}</td>
 
-            <td>${getIcon(item.pm10, t[4], t[5])} ${Number(item.pm10).toFixed(1)}</td>
+            <td>${getIcon(item.pm10, t.pm10Warning, t.pm10Danger)} ${Number(item.pm10).toFixed(1)}</td>
 
-            <td>${getIcon(item.noise, t[6], t[7])} ${Number(item.noise).toFixed(1)}</td>
+            <td>${getIcon(item.noise, t.noiseWarning, t.noiseDanger)} ${Number(item.noise).toFixed(1)}</td>
 
-            <td>${getIcon(item.temperature, t[8], t[9])} ${Number(item.temperature).toFixed(1)}</td>
+            <td>${getIcon(item.temperature, t.tempWarning, t.tempDanger)} ${Number(item.temperature).toFixed(1)}</td>
 
-            <td>${getIcon(item.humidity, t[10], t[11])} ${Number(item.humidity).toFixed(1)}</td>
+            <td>${getIcon(item.humidity, t.humidityWarning, t.humidityDanger)} ${Number(item.humidity).toFixed(1)}</td>
 
-            <td>${getIcon(item.light, t[12], t[13], true)} ${Number(item.light).toFixed(1)}</td>
-
+            <td>${getIcon(item.light, t.lightWarning, t.lightDanger, true)} ${Number(item.light).toFixed(1)}</td>
         </tr>
         `;
 
@@ -501,37 +513,54 @@ async function loadHistory() {
 function calculateSummary() {
 
     let table = document.getElementById("historyTable");
-    let rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+
+    let rows = document.querySelectorAll("#historyTable tbody tr");
 
     let total = 0;
     let safe = 0;
     let warning = 0;
     let danger = 0;
 
-    for (let i = 0; i < rows.length; i++) {
+    rows.forEach(row => {
 
-        if (rows[i].style.display === "none")
-            continue;
+        if(row.style.display=="none") return;
 
         total++;
 
-        let status = rows[i].cells[9].innerText.toLowerCase();
+        let cells = row.querySelectorAll("td");
 
-        if (status.includes("safe")) {
-            safe++;
+        let rowDanger = false;
+        let rowWarning = false;
+
+        for(let i=2;i<cells.length;i++){
+
+            let text = cells[i].innerText;
+
+            if(text.includes("🔴")){
+                rowDanger = true;
+                break;
+            }
+
+            if(text.includes("🟡")){
+                rowWarning = true;
+            }
+
         }
-        else if (status.includes("warning")) {
-            warning++;
-        }
-        else if (status.includes("danger") || status.includes("critical")) {
+
+        if(rowDanger)
             danger++;
-        }
-    }
+        else if(rowWarning)
+            warning++;
+        else
+            safe++;
 
-    document.getElementById("totalRecords").innerHTML = total;
-    document.getElementById("safeCount").innerHTML = safe;
-    document.getElementById("warningCount").innerHTML = warning;
-    document.getElementById("dangerCount").innerHTML = danger;
+    });
+
+    document.getElementById("totalRecords").innerText = total;
+    document.getElementById("safeCount").innerText = safe;
+    document.getElementById("warningCount").innerText = warning;
+    document.getElementById("dangerCount").innerText = danger;
+
 }
 loadHistory();
 setInterval(loadHistory,1000);
