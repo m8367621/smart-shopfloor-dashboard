@@ -9,6 +9,7 @@ app.use(express.json());
 app.use(express.static(__dirname));
 
 let lastSeen = 0;
+let history = [];
 let sensorData = {
     esp32: "Not Connected",
     wifi: "Not Connected",
@@ -70,6 +71,31 @@ app.post("/api/data", (req, res) => {
         status = "Warning";
     }
     // Save every sensor reading to Firebase
+    history.unshift({
+    date: new Date().toLocaleDateString("en-GB", {
+        timeZone: "Asia/Kolkata"
+    }),
+    time: new Date().toLocaleTimeString("en-IN", {
+        timeZone: "Asia/Kolkata",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true
+    }),
+    pm1: sensorData.pm1,
+    pm25: sensorData.pm25,
+    pm10: sensorData.pm10,
+    noise: sensorData.noise,
+    temperature: sensorData.temperature,
+    humidity: sensorData.humidity,
+    light: sensorData.light,
+    status: status
+});
+
+// Keep only the latest 1000 records
+if (history.length > 10000) {
+    history.pop();
+}
 
     res.json({
         success: true
@@ -101,6 +127,9 @@ app.get("/api/data", (req, res) => {
 
 // ================= HISTORY =================
 
+app.get("/api/history", (req, res) => {
+    res.json(history);
+});
 
 
 app.listen(PORT, () => {
