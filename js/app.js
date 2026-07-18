@@ -105,7 +105,15 @@ async function updateStatus() {
 
         const container = document.getElementById("alertsContainer");
 
-        container.innerHTML = "";
+        // Check whether Recent Sensor Alerts is enabled
+        const settings = JSON.parse(localStorage.getItem("shopfloorSettings")) || {};
+
+        if(settings.recentAlerts === false){
+            container.style.display = "none";
+            return;
+        }else{
+            container.style.display = "block";
+        }
 
         if (data.esp32 !== "Connected") {
 
@@ -325,9 +333,9 @@ function getSensorStatus(value, warning, critical, reverse = false){
 
 }
 
-function addAlert(sensor, status){
+let alertHistory = [];
 
-    const container = document.getElementById("alertsContainer");
+function addAlert(sensor, status){
 
     const time = new Date().toLocaleTimeString("en-US",{
         hour:"2-digit",
@@ -336,29 +344,52 @@ function addAlert(sensor, status){
         hour12:true
     });
 
-    let css = "alert-safe";
+    alertHistory.push({
+        sensor,
+        status,
+        time
+    });
 
-    if(status === "WARNING"){
-        css = "alert-warning";
-    }
-    else if(status === "CRITICAL"){
-        css = "alert-danger";
+    // Keep only latest 10 alerts
+    if(alertHistory.length > 10){
+        alertHistory.shift();
     }
 
-    container.innerHTML += `
-        <div class="alert-item ${css}">
-            <span><b>${sensor}</b> : ${status}</span>
-            <span class="alert-time">${time}</span>
-        </div>
-    `;
+    displayAlerts();
 }
+
+function displayAlerts(){
+
+    const container = document.getElementById("alertsContainer");
+
+    container.innerHTML = "";
+
+    alertHistory.forEach(alert =>{
+
+        let css = "alert-safe";
+
+        if(alert.status === "WARNING")
+            css = "alert-warning";
+
+        else if(alert.status === "CRITICAL")
+            css = "alert-danger";
+
+        container.innerHTML += `
+        <div class="alert-item ${css}">
+            <span><b>${alert.sensor}</b> : ${alert.status}</span>
+            <span>${alert.time}</span>
+        </div>`;
+    });
+
+}
+
 function checkAlert(sensorKey, sensorName, status){
 
-    if(previousStatus[sensorKey] !== status){
+    if(previousStatus[sensorKey]!==status){
 
-        previousStatus[sensorKey] = status;
+        previousStatus[sensorKey]=status;
 
-        addAlert(sensorName, status);
+        addAlert(sensorName,status);
 
     }
 

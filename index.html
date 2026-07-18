@@ -192,7 +192,7 @@
     
     <!-- ================= RECENT ALERTS ================= -->
 
-    <div class="alerts-section">
+    <div class="alerts-section"id="recentAlertsCard">
 
     <h2>🔔 Recent Sensor Alerts</h2>
 
@@ -209,6 +209,14 @@
 
     function toggleSidebar() {
     document.querySelector(".sidebar").classList.toggle("active");
+    }
+    
+    const settings = JSON.parse(localStorage.getItem("shopfloorSettings"));
+
+    if (settings && settings.recentAlert === false) {
+        document.getElementById("recentAlertsCard").style.display = "none";
+    } else {
+        document.getElementById("recentAlertsCard").style.display = "block";
     }
 
     </script>

@@ -6,12 +6,22 @@
 <title>Settings</title>
 
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="css/dashboard.css">
 
 <style>
+
+body{
+    margin:0;
+    font-family:'Poppins',sans-serif;
+    background:#0f172a;
+    color:white;
+}
 
 .settings-container{
     margin-left:280px;
     padding:20px;
+    min-height:100vh;
+    background:#0f172a;
 }
 
 .box{
@@ -23,7 +33,8 @@
 }
 
 h1{
-    color:white;
+    color:#ffffff;
+    margin-bottom:25px;
 }
 
 h2{
@@ -214,25 +225,9 @@ color:white;
 <h2>Alert Settings</h2>
 
 
-<input type="checkbox" checked>
+<input type="checkbox" id="recentAlert" checked>
 
-Enable Tower Lamp Alert
-
-
-<br>
-
-
-<input type="checkbox" checked>
-
-Enable Dashboard Alert
-
-
-<br>
-
-
-<input type="checkbox">
-
-Enable Sound Alert
+Enable Recent Sensor Alerts
 
 
 
@@ -318,7 +313,9 @@ document.querySelector(".save").onclick = function(){
         humidityDanger: Number(inputs[11].value),
 
         lightWarning: Number(inputs[12].value),
-        lightDanger: Number(inputs[13].value)
+        lightDanger: Number(inputs[13].value),
+
+        recentAlert: document.getElementById("recentAlert").checked
 
     };
 
@@ -335,12 +332,14 @@ document.querySelector(".reset").onclick = function(){
 
     localStorage.removeItem("shopfloorSettings");
 
-    alert("Settings Reset");
+    // Reset the Recent Sensor Alerts checkbox
+    document.getElementById("recentAlert").checked = true;
+
+    alert("Settings Reset Successfully");
 
     location.reload();
 
 };
-
 
 
 // Load saved settings
@@ -373,6 +372,8 @@ window.onload = function(){
 
         inputs[12].value = settings.lightWarning;
         inputs[13].value = settings.lightDanger;
+
+        document.getElementById("recentAlert").checked = settings.recentAlert ?? true;
 
     }
 
