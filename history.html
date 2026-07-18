@@ -523,36 +523,28 @@ function calculateSummary() {
 
     rows.forEach(row => {
 
-        if(row.style.display=="none") return;
-
-        total++;
+    if(row.style.display=="none") return;
 
         let cells = row.querySelectorAll("td");
 
-        let rowDanger = false;
-        let rowWarning = false;
+        // Count every sensor individually
+        for(let i = 2; i <= 8; i++){
 
-        for(let i=2;i<cells.length;i++){
+            total++;
 
             let text = cells[i].innerText;
 
-            if(text.includes("🔴")){
-                rowDanger = true;
-                break;
+            if(text.includes("🟢")){
+                safe++;
             }
-
-            if(text.includes("🟡")){
-                rowWarning = true;
+            else if(text.includes("🟡")){
+                warning++;
+            }
+            else if(text.includes("🔴")){
+                danger++;
             }
 
         }
-
-        if(rowDanger)
-            danger++;
-        else if(rowWarning)
-            warning++;
-        else
-            safe++;
 
     });
 
