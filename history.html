@@ -256,6 +256,18 @@ document.querySelector(".excel-btn").onclick = function () {
 
     let data = [];
 
+    data.push(["Smart Shopfloor Environment Monitoring System"]);
+    data.push(["Sensor History Report"]);
+    data.push(["Generated", new Date().toLocaleString()]);
+    data.push([]);
+
+    data.push(["Total Readings", document.getElementById("totalRecords").innerText]);
+    data.push(["Safe", document.getElementById("safeCount").innerText]);
+    data.push(["Warning", document.getElementById("warningCount").innerText]);
+    data.push(["Danger", document.getElementById("dangerCount").innerText]);
+
+    data.push([]);
+
     data.push([
         "Date",
         "Time",
@@ -265,10 +277,9 @@ document.querySelector(".excel-btn").onclick = function () {
         "Noise",
         "Temperature",
         "Humidity",
-        "Light",
-        "Status"
+        "Light"
     ]);
-
+    
     let rows = document.querySelectorAll("#historyTable tbody tr");
 
     rows.forEach(row => {
