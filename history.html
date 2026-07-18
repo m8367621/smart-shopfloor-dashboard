@@ -343,7 +343,26 @@ document.querySelector(".excel-btn").onclick = function () {
     let rowData = [];
 
     row.querySelectorAll("td").forEach(cell => {
-        rowData.push(cell.innerText);
+
+        let text = cell.innerText.trim();
+
+        if(text.includes("🟢")){
+            text = text.replace("🟢","").trim();
+            text = "Safe (" + text + ")";
+        }
+
+        else if(text.includes("🟡")){
+            text = text.replace("🟡","").trim();
+            text = "Warning (" + text + ")";
+        }
+
+        else if(text.includes("🔴")){
+            text = text.replace("🔴","").trim();
+            text = "Danger (" + text + ")";
+        }
+
+        rowData.push(text);
+
     });
 
     data.push(rowData);
@@ -351,6 +370,18 @@ document.querySelector(".excel-btn").onclick = function () {
     });
 
     let ws = XLSX.utils.aoa_to_sheet(data);
+
+        ws["!cols"] = [
+        { wch: 15 }, // Date
+        { wch: 15 }, // Time
+        { wch: 18 }, // PM1.0
+        { wch: 18 }, // PM2.5
+        { wch: 18 }, // PM10
+        { wch: 18 }, // Noise
+        { wch: 18 }, // Temperature
+        { wch: 18 }, // Humidity
+        { wch: 18 }  // Light
+    ];
 
     XLSX.utils.book_append_sheet(wb, ws, "Sensor History");
 
