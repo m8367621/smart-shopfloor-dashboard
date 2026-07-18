@@ -232,18 +232,60 @@ document.querySelector(".success-btn").onclick = function () {
     doc.text("Warning : " + document.getElementById("warningCount").innerText, 15, 69);
     doc.text("Danger : " + document.getElementById("dangerCount").innerText, 15, 76);
 
+    // Get table data
+    let body = [];
+
+    document.querySelectorAll("#historyTable tbody tr").forEach(row => {
+
+        if (row.style.display === "none") return;
+
+        let rowData = [];
+
+        row.querySelectorAll("td").forEach(cell => {
+
+            let text = cell.innerText;
+
+            text = text.replace("🟢", "Safe");
+            text = text.replace("🟡", "Warning");
+            text = text.replace("🔴", "Danger");
+
+            rowData.push(text);
+
+        });
+
+        body.push(rowData);
+
+    });
+
     doc.autoTable({
-        html: "#historyTable",
+
+        head: [[
+            "Date",
+            "Time",
+            "PM1.0",
+            "PM2.5",
+            "PM10",
+            "Noise",
+            "Temperature",
+            "Humidity",
+            "Light"
+        ]],
+
+        body: body,
+
         startY: 85,
+
         theme: "grid",
+
         styles: {
             fontSize: 8
         },
-        headStyles: {
-            fillColor: [41, 128, 185]
-        }
-    });
 
+        headStyles: {
+            fillColor: [41,128,185]
+        }
+
+    });
     doc.save("Smart_Shopfloor_Report.pdf");
 }
 
@@ -279,7 +321,7 @@ document.querySelector(".excel-btn").onclick = function () {
         "Humidity",
         "Light"
     ]);
-    
+
     let rows = document.querySelectorAll("#historyTable tbody tr");
 
     rows.forEach(row => {
