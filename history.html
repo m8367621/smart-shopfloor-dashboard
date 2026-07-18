@@ -243,11 +243,22 @@ document.querySelector(".success-btn").onclick = function () {
 
         row.querySelectorAll("td").forEach(cell => {
 
-            let text = cell.innerText;
+            let text = cell.innerText.trim();
 
-            text = text.replace("🟢", "Safe");
-            text = text.replace("🟡", "Warning");
-            text = text.replace("🔴", "Danger");
+            if(text.includes("🟢")){
+                text = text.replace("🟢","").trim();
+                text = "Safe (" + text + ")";
+            }
+
+            else if(text.includes("🟡")){
+                text = text.replace("🟡","").trim();
+                text = "Warning (" + text + ")";
+            }
+
+            else if(text.includes("🔴")){
+                text = text.replace("🔴","").trim();
+                text = "Danger (" + text + ")";
+            }
 
             rowData.push(text);
 
