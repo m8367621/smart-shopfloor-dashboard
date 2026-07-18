@@ -126,29 +126,51 @@ async function updateStatus() {
 
         } else {
 
-            const saved = JSON.parse(localStorage.getItem("shopfloorSettings")) || [
-            50,100,
-            60,120,
-            100,200,
-            80,100,
-            35,45,
-            80,90,
-            500,1000
-            ];
+            const saved = JSON.parse(localStorage.getItem("shopfloorSettings")) || {
 
-            checkAlert("pm1","PM1.0",getSensorStatus(data.pm1,Number(saved[0]),Number(saved[1])));
+                pm1Warning:50,
+                pm1Danger:100,
 
-            checkAlert("pm25","PM2.5",getSensorStatus(data.pm25,Number(saved[2]),Number(saved[3])));
+                pm25Warning:60,
+                pm25Danger:120,
 
-            checkAlert("pm10","PM10",getSensorStatus(data.pm10,Number(saved[4]),Number(saved[5])));
+                pm10Warning:100,
+                pm10Danger:200,
 
-            checkAlert("noise","Noise",getSensorStatus(data.noise,Number(saved[6]),Number(saved[7])));
+                noiseWarning:80,
+                noiseDanger:100,
 
-            checkAlert("temperature","Temperature",getSensorStatus(data.temperature,Number(saved[8]),Number(saved[9])));
+                tempWarning:35,
+                tempDanger:45,
 
-            checkAlert("humidity","Humidity",getSensorStatus(data.humidity,Number(saved[10]),Number(saved[11])));
+                humidityWarning:80,
+                humidityDanger:90,
 
-            checkAlert("light","Ambient Light",getSensorStatus(data.light,Number(saved[12]),Number(saved[13]),true));
+                lightWarning:150,
+                lightDanger:80
+
+            };
+
+            checkAlert("pm1","PM1.0",
+            getSensorStatus(data.pm1, saved.pm1Warning, saved.pm1Danger));
+
+            checkAlert("pm25","PM2.5",
+            getSensorStatus(data.pm25, saved.pm25Warning, saved.pm25Danger));
+
+            checkAlert("pm10","PM10",
+            getSensorStatus(data.pm10, saved.pm10Warning, saved.pm10Danger));
+
+            checkAlert("noise","Noise",
+            getSensorStatus(data.noise, saved.noiseWarning, saved.noiseDanger));
+
+            checkAlert("temperature","Temperature",
+            getSensorStatus(data.temperature, saved.tempWarning, saved.tempDanger));
+
+            checkAlert("humidity","Humidity",
+            getSensorStatus(data.humidity, saved.humidityWarning, saved.humidityDanger));
+
+            checkAlert("light","Ambient Light",
+            getSensorStatus(data.light, saved.lightWarning, saved.lightDanger, true));
         }
 
         // ================= LIVE CHARTS =================
