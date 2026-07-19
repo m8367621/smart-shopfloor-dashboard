@@ -40,6 +40,8 @@ let sensorData = {
 app.post("/api/data", (req, res) => {
 
     lastSeen = Date.now();
+    console.log("ESP32 Data Received");
+    console.log(req.body);
 
     sensorData = {
         ...sensorData,
