@@ -1,21 +1,9 @@
 const express = require("express");
 const cors = require("cors");
-const fs = require("fs");
-const path = require("path");
-const mongoose = require("mongoose");
-
-const historyFile = path.join(__dirname, "history.json");
 
 const app = express();
 const PORT = 3000;
-const MONGO_URI = "mongodb+srv://m8367621_db_user:20pePOeiBIKa9Svz@smartshopfloor.nmxkbdm.mongodb.net/?appName=SmartShopfloor";
-mongoose.connect(MONGO_URI)
-.then(() => {
-    console.log("✅ MongoDB Connected");
-})
-.catch((err) => {
-    console.log("❌ MongoDB Connection Error:", err);
-});
+
 app.use(cors());
 app.use(express.json());
 app.use(express.static(__dirname));
@@ -23,9 +11,6 @@ app.use(express.static(__dirname));
 let lastSeen = 0;
 let history = [];
 
-if (fs.existsSync(historyFile)) {
-    history = JSON.parse(fs.readFileSync(historyFile));
-}
 let sensorData = {
     esp32: "Not Connected",
     wifi: "Not Connected",
@@ -114,10 +99,7 @@ app.post("/api/data", (req, res) => {
 if (history.length > 10000) {
     history.pop();
 }
-fs.writeFileSync(
-    historyFile,
-    JSON.stringify(history, null, 2)
-);
+
 
     res.json({
         success: true
