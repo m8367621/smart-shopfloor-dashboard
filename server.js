@@ -2,12 +2,20 @@ const express = require("express");
 const cors = require("cors");
 const fs = require("fs");
 const path = require("path");
+const mongoose = require("mongoose");
 
 const historyFile = path.join(__dirname, "history.json");
 
 const app = express();
 const PORT = 3000;
-
+const MONGO_URI = "mongodb+srv://m8367621_db_user:20pePOeiBIKa9Svz@smartshopfloor.nmxkbdm.mongodb.net/?appName=SmartShopfloor";
+mongoose.connect(MONGO_URI)
+.then(() => {
+    console.log("✅ MongoDB Connected");
+})
+.catch((err) => {
+    console.log("❌ MongoDB Connection Error:", err);
+});
 app.use(cors());
 app.use(express.json());
 app.use(express.static(__dirname));
