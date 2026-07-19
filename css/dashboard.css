@@ -932,6 +932,41 @@ h1{
     color:#cbd5e1;
 }
 
+/* Light Mode Search Box */
+
+body.light-mode .search-box{
+
+    background:#ffffff;
+    border:2px solid #000;
+    border-radius:8px;
+
+}
+
+body.light-mode .search-box input{
+
+    background:transparent;
+    color:#000;
+    border:none;
+
+}
+
+body.light-mode .search-box input::placeholder{
+
+    color:#555;
+
+}
+
+body.light-mode .search-icon{
+
+    color:#000;
+
+}
+
+body.light-mode .search-box input:focus{
+
+    outline:none;
+
+}
 .search-icon{
     position:absolute;
     left:18px;
@@ -1053,3 +1088,129 @@ label{
 
 }
 
+body.light-mode .sensor-card.safe{
+    border:3px solid #22c55e;
+    box-shadow:0 0 12px rgba(34,197,94,0.35);
+}
+
+body.light-mode .sensor-card.warning{
+    border:3px solid #facc15;
+    box-shadow:0 0 12px rgba(250,204,21,0.35);
+}
+
+body.light-mode .sensor-card.danger{
+    border:3px solid #ef4444;
+    box-shadow:0 0 12px rgba(239,68,68,0.35);
+}
+
+/* ==========================
+   HISTORY SUMMARY CARDS
+   LIGHT MODE
+========================== */
+
+body.light-mode .summary-card{
+    background:#ffffff;
+    color:#111827;
+    border:3px solid #d1d5db;
+    border-radius:15px;
+}
+
+/* Total Records - Mixed Blue/Purple/Green Border */
+
+body.light-mode .summary-card:first-child{
+    border:3px solid transparent;
+    background:
+        linear-gradient(#ffffff,#ffffff) padding-box,
+        linear-gradient(135deg,#3b82f6,#8b5cf6,#22c55e) border-box;
+}
+
+/* Safe */
+
+body.light-mode .summary-card.safe{
+    border:3px solid #22c55e;
+    box-shadow:0 0 12px rgba(34,197,94,0.30);
+}
+
+/* Warning */
+
+body.light-mode .summary-card.warning{
+    border:3px solid #facc15;
+    box-shadow:0 0 12px rgba(250,204,21,0.30);
+}
+
+/* Danger */
+
+body.light-mode .summary-card.danger{
+    border:3px solid #ef4444;
+    box-shadow:0 0 12px rgba(239,68,68,0.30);
+}
+
+/* Date Range - Light Mode */
+
+body.light-mode #dateRange,
+body.light-mode #fromDate,
+body.light-mode #toDate{
+
+    background:#ffffff;
+    color:#000000;
+    border:2px solid #000000;
+    border-radius:8px;
+
+}
+
+/* Filter Labels */
+
+body.light-mode .filter-box label{
+
+    color:#000000;
+
+}
+
+/* Calendar icon */
+body.light-mode input[type="date"]::-webkit-calendar-picker-indicator{
+
+    opacity:1;
+    filter: brightness(0);
+
+}
+/* ================= ABOUT PAGE LIGHT MODE ================= */
+
+body.light-mode {
+    background: #f5f7fb;
+    color: #222;
+}
+
+body.light-mode .about-container {
+    background: #f5f7fb;
+}
+
+body.light-mode .about-card,
+body.light-mode .card,
+body.light-mode .box {
+    background: #ffffff;
+    color: #222;
+    border: 1px solid #dcdcdc;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+body.light-mode h1,
+body.light-mode h2,
+body.light-mode h3 {
+    color: #0f172a;
+}
+
+body.light-mode p,
+body.light-mode li,
+body.light-mode span {
+    color: #444;
+}
+
+body.light-mode .architecture-box {
+    background: #f8fafc;
+    border: 2px dashed #3b82f6;
+    color: #0f172a;
+}
+
+body.light-mode .architecture-box * {
+    color: #0f172a;
+}

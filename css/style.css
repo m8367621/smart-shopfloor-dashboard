@@ -190,3 +190,42 @@ color:#00bfff;
     font-weight:bold;
 }
 
+/* ================= LIGHT MODE - SETTINGS PAGE ================= */
+
+body.light-mode{
+    background: #f4f7fb;
+    color: #222;
+}
+
+body.light-mode .main-content{
+    background: #f4f7fb;
+}
+
+body.light-mode .settings-container{
+    background: transparent;
+}
+
+body.light-mode .settings-card{
+    background: #ffffff;
+    color: #222;
+    border: 1px solid #dcdcdc;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+body.light-mode .settings-card h2,
+body.light-mode .settings-card h3,
+body.light-mode .settings-card label,
+body.light-mode .settings-card p{
+    color: #222;
+}
+
+body.light-mode .settings-card input,
+body.light-mode .settings-card select{
+    background: #ffffff;
+    color: #222;
+    border: 1px solid #999;
+}
+
+body.light-mode .settings-card input::placeholder{
+    color: #666;
+}

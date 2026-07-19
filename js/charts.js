@@ -1,7 +1,7 @@
 // ================= LIVE CHARTS =================
 
 const maxPoints = 20;
-let pausecharts = false
+let pauseCharts = false;
 function getTime() {
     return new Date().toLocaleTimeString("en-US", {
         hour: "2-digit",
@@ -161,27 +161,38 @@ Date : ${new Date().toLocaleDateString("en-GB")}`
 
             },
 
-            scales:{
+            scales: {
 
-                x:{
-                    ticks:{
-                        color:"white",
-                        maxTicksLimit:6
+                x: {
+
+                    ticks: {
+                        color: document.body.classList.contains("light-mode")
+                            ? "#000000"
+                            : "#ffffff"
                     },
-                    grid:{
-                        color:"#444"
+
+                    grid: {
+                        color: document.body.classList.contains("light-mode")
+                            ? "#cccccc"
+                            : "#444444"
                     }
+
                 },
 
-                y:{
-                    min:0,
-                    max:maxY,
-                    ticks:{
-                        color:"white"
+                y: {
+
+                    ticks: {
+                        color: document.body.classList.contains("light-mode")
+                            ? "#000000"
+                            : "#ffffff"
                     },
-                    grid:{
-                        color:"#444"
+
+                    grid: {
+                        color: document.body.classList.contains("light-mode")
+                            ? "#cccccc"
+                            : "#444444"
                     }
+
                 }
 
             }
@@ -256,6 +267,19 @@ function updateChart(chart, value) {
 
     chart.data.labels.push(getTime());
     chart.data.datasets[0].data.push(Number(value));
+
+    // Update chart colors based on current theme
+    chart.options.scales.x.ticks.color =
+    document.body.classList.contains("light-mode") ? "#000" : "#fff";
+
+    chart.options.scales.y.ticks.color =
+    document.body.classList.contains("light-mode") ? "#000" : "#fff";
+
+    chart.options.scales.x.grid.color =
+    document.body.classList.contains("light-mode") ? "#d1d5db" : "#444";
+
+    chart.options.scales.y.grid.color =
+    document.body.classList.contains("light-mode") ? "#d1d5db" : "#444";
 
     chart.update();
 
