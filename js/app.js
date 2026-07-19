@@ -416,3 +416,40 @@ function checkAlert(sensorKey, sensorName, status){
     }
 
 }
+// ================= THEME TOGGLE =================
+
+function toggleTheme() {
+
+    const body = document.body;
+
+    body.classList.toggle("light-mode");
+
+    const icon = document.getElementById("themeIcon");
+
+    if (body.classList.contains("light-mode")) {
+
+        icon.innerHTML = "☀️";
+        localStorage.setItem("theme", "light");
+
+    } else {
+
+        icon.innerHTML = "🌙";
+        localStorage.setItem("theme", "dark");
+
+    }
+}
+
+// Load saved theme
+window.addEventListener("load", function () {
+
+    const savedTheme = localStorage.getItem("theme");
+
+    if (savedTheme === "light") {
+
+        document.body.classList.add("light-mode");
+
+        const icon = document.getElementById("themeIcon");
+        if (icon) icon.innerHTML = "☀️";
+
+    }
+});

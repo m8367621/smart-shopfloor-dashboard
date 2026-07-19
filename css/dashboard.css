@@ -940,3 +940,85 @@ h1{
     color:#cbd5e1;
     font-size:20px;
 }
+/* ===========================
+   Theme Toggle Button
+=========================== */
+
+.theme-toggle{
+    cursor:pointer;
+    transition:0.3s;
+    user-select:none;
+}
+
+.theme-toggle:hover{
+    transform:rotate(20deg)
+}
+/* ==========================
+   LIGHT MODE
+========================== */
+
+body.light-mode{
+    background:#f5f7fb;
+    color:#111827;
+}
+
+body.light-mode .sidebar{
+    background:#ffffff;
+    color:#111827;
+    border-right:1px solid #d1d5db;
+}
+
+body.light-mode .main-content{
+    background:#f5f7fb;
+}
+
+body.light-mode .topbar{
+    background:#ffffff;
+    color:#111827;
+}
+
+body.light-mode .status-card{
+    background:#ffffff;
+    color:#111827;
+    border:1px solid #d1d5db;
+}
+
+body.light-mode .sensor-card,
+body.light-mode .graph-card,
+body.light-mode .summary-card,
+body.light-mode .box,
+body.light-mode .table-container,
+body.light-mode .alerts-section{
+    background:#ffffff;
+    color:#111827;
+    border:1px solid #d1d5db;
+}
+
+body.light-mode table{
+    background:#ffffff;
+    color:#111827;
+}
+
+body.light-mode th{
+    background:#2563eb;
+    color:white;
+}
+
+body.light-mode td{
+    color:#111827;
+}
+
+body.light-mode h1,
+body.light-mode h2,
+body.light-mode h3,
+body.light-mode p,
+body.light-mode label{
+    color:#111827;
+}
+
+body.light-mode input,
+body.light-mode select{
+    background:#ffffff;
+    color:#111827;
+    border:1px solid #cbd5e1;
+}
